@@ -16,7 +16,6 @@ Any package manager can be used with this project (e.g. npm, yarn or pnpm).
 
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Axios](https://axios-http.com/)
 - [React Router DOM](https://reactrouter.com/)
@@ -39,10 +38,6 @@ Any package manager can be used with this project (e.g. npm, yarn or pnpm).
 ![vite-mern-template-gh-demo](https://user-images.githubusercontent.com/78271602/234833309-fe8df564-2895-4727-be1e-c807fe142333.gif)
 
 ## Installation
-
-```bash
-npx degit apicgg/vite-mern-template my-app
-```
 
 ## Install dependencies (npm or yarn or pnpm)
 
@@ -73,13 +68,9 @@ npm run dev:be
 npm run dev:fe
 ```
 
-- Remove the .git and .github folder and initialize your own git repository.
-
-## TODO
-
-- [x] Include eslint and prettier.
-- [x] Add testing framework.
-- [ ] Create a npm CLI library for scaffolding projects.
+# Dataset is required 
+- Unzip data/json.zip from [here](https://github.com/docyx/pc-part-dataset)
+- Put this in the directory `json` in the working directory of this application
 
 ## License
 
