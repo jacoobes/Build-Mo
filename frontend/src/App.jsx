@@ -9,6 +9,7 @@ const App = () => {
   return (
     <Router>
       <Routes> {/* Wrap Route components in Routes */}
+        <Route path="/" element={<a>Hola como estas</a>}/>
         <Route path="/register" element={<RegisterPage />} /> {/* Use element prop */}
         <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
         {/* Add more routes as needed */}
