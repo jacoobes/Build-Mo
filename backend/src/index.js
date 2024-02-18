@@ -1,8 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import User from '../models/user.js';
-import {connectDB} from './db.js';
 import bcrypt from 'bcryptjs';
+import User from '../models/user.js';
+import { connectDB } from './db.js';
 import cors from 'cors';
 
 const app = express();
@@ -10,31 +9,29 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
+
 // Connect to the MongoDB database
-try{
+try {
     await connectDB();
     console.log('Connected to MongoDB');
 } catch (err) {
     console.error('Error connecting to Database', err);
 }
 
-
 // Route to create user
 app.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Check if a user with the provided email already exists
+        // Check if a user with the provided username already exists
         const existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ error: 'User already exists with this username' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         const newUser = new User({
             username,
-            password: hashedPassword
+            password
         });
 
         // Save the user to the database
@@ -56,7 +53,7 @@ app.post('/login', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid password' });
         }
