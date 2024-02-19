@@ -1,4 +1,6 @@
 import express from 'express';
+import User from '../models/user.js';
+import {connectDB} from './db.js';
 import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 import { connectDB } from './db.js';

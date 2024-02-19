@@ -4,7 +4,7 @@
   "main": "backend/src/index.ts",
   "scripts": {
     "backend": "node --watch backend/src/index.js",
-    "dev:be": "npm run backend",
+    "dev:be": "node ./backend/src/index.js",
     "dev:fe": "npm start --prefix ./frontend",
     "prettier": "prettier --write .",
     "build:frontend": "npm run build --prefix ./frontend",
