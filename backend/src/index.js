@@ -3,12 +3,16 @@ import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 import { connectDB } from './db.js';
 import cors from 'cors';
+import session from 'express-session';
+import connectMongo from 'connect-mongo';
+import { url } from './db.js';
 
 const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
+
 
 // Connect to the MongoDB database
 try {
@@ -17,6 +21,18 @@ try {
 } catch (err) {
     console.error('Error connecting to Database', err);
 }
+
+app.use(session({
+    secret: 'thesecretkey', //could be anything
+    resave: false,
+    saveUninitialized: false,
+    store: connectMongo.create({
+        mongoUrl: url
+    }),
+    cookie: {
+            maxAge: 1000 * 60 * 60 * 24 // Session duration (1 day)
+        }
+}));
 
 // Route to create user
 app.post('/register', async (req, res) => {
@@ -59,6 +75,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Password is correct, authentication successful
+        req.session.user = user; //Request the user session
         res.json({ message: 'Authentication successful' });
     } catch (err) {
         console.error('Error authenticating user:', err);
