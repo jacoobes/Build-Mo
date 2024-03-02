@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +19,20 @@ const Login = () => {
         },
         body: JSON.stringify({ username, password })
       });
-      const data = await response.json();
-      console.log(data); // handle success, maybe redirect
+
+      console.log('Response status:', response.status); // Log the response status
+      //If response is success, redirect
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response data:', data); // Log the response status
+        console.log(data); // handle success, maybe redirect
+        navigate('/logout');
+      } else {
+        setError('There is an issue with the response');
+      }
     } catch (error) {
       setError('Invalid username or password');
+      console.error('Error:', error); // Log the error
     }
   };
 

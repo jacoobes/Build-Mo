@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Im
 import RegisterPage from './Register.jsx';
 import LoginPage from './Login.jsx';
 import AuthenticationPage from './Home.jsx';
+import LogoutPage from './Logout.jsx';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/" element={<AuthenticationPage/>}/>
         <Route path="/register" element={<RegisterPage />} /> {/* Use element prop */}
         <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
+        <Route path="/logout" element={<LogoutPage />} /> {}
         {/* Add more routes as needed */}
       </Routes>
     </Router>
