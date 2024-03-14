@@ -98,7 +98,7 @@
             req.session.destroy(); // Destroy the session
             res.status(200).json({ message: 'Logout successful' });
         } catch (err) {
-            console.error('Error logging out:', error);
+            console.error('Error logging out:', err);
             res.status(500).json({ error: 'Failed to logout' });
         }
     });
@@ -144,9 +144,7 @@
             return;
         }
         let json_file = null
-        try {
-            json_file = await read_json(jsonName);
-        }
+        try { json_file = await read_json(jsonName); }
         catch(e) {}
         if(!json_file) {
             res.status(400).json({ message: "Could not find json data" })
@@ -157,9 +155,7 @@
     })
     app.get('/api/categories', async (_, res) => {
         let json_file = null
-        try {
-            json_file = await ls_json();
-        }
+        try { json_file = await ls_json(); }
         catch(e) {}
         if(!json_file) {
             res.status(400).json({ message: "Could not find json data" })
