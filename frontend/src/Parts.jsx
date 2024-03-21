@@ -117,7 +117,7 @@ const DataGrid = () => {
     const [values, setValue] = React.useState(null)
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/todos")
+        fetch("http://localhost:5005/api/json/cpu")
         .then(res => res.json())
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
@@ -130,7 +130,7 @@ const DataGrid = () => {
                     {values.map(s =>
                        <Card>
                             <CardContent> 
-                                {s.title}
+                                {s.name}
                             </CardContent>
                         </Card> 
                     )}
