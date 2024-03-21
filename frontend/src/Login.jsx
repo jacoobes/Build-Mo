@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from './hooks/useAuth.jsx'
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
 
@@ -26,6 +26,7 @@ const Login = () => {
         const data = await response.json();
         console.log('Response data:', data); // Log the response status
         console.log(data); // handle success, maybe redirect
+        await login({ username });
         navigate('/logout');
       } else {
         setError('There is an issue with the response');
