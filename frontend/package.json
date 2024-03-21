@@ -13,14 +13,17 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.3.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
