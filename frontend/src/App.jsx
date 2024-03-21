@@ -5,12 +5,14 @@ import RegisterPage from './Register.jsx';
 import LoginPage from './Login.jsx';
 import AuthenticationPage from './Home.jsx';
 import LogoutPage from './Logout.jsx';
+import DataGrid from './Parts.jsx';
 
 const App = () => {
   return (
     <Router>
       <Routes> {/* Wrap Route components in Routes */}
         <Route path="/" element={<AuthenticationPage/>}/>
+        <Route path="/parts" element = { <DataGrid/> } />
         <Route path="/register" element={<RegisterPage />} /> {/* Use element prop */}
         <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
         <Route path="/logout" element={<LogoutPage />} /> {}
