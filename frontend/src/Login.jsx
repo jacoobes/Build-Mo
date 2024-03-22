@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.jsx'
 import { Button } from '@/components/ui/button.jsx'
@@ -35,16 +35,17 @@ const Login = () => {
         navigate('/logout');
       } else {
         setError('There is an issue with the response');
+        alert(error)
       }
     } catch (error) {
-      setError('Invalid username or password');
+      setError('Something went wrong. Sorry idk');
+      alert(error)
       console.error('Error:', error); // Log the error
     }
   };
 
   return (
     <div className="h-screen flex items-center justify-center">
-      {error && <p>{error}</p>}
       <div className={cn("grid gap-6")}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
@@ -59,7 +60,9 @@ const Login = () => {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
+              value={username}
               disabled={isLoading}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <Input
               id="password"
@@ -68,6 +71,8 @@ const Login = () => {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
             />
           </div>
@@ -77,6 +82,9 @@ const Login = () => {
             )}
             Log In with Email
           </Button>
+            <p className="text-sm text-muted-foreground">
+                Enter your email to create your account
+            </p>
         </div>
       </form>
         </div>

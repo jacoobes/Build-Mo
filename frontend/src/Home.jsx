@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
+import { useState } from 'react'
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { UserAuthForm } from "@/components/ui/user-auth-form"
 
 export default function AuthenticationPage() {
 
+    const [loading, isLoading] = useState(false);
   return (
     <>
       <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="/examples/authentication"
+          href="/login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
@@ -54,7 +55,6 @@ export default function AuthenticationPage() {
                 Enter your email below to create your account
               </p>
             </div>
-            <UserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
