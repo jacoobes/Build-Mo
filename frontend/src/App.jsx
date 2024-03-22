@@ -5,7 +5,7 @@ import LoginPage from './Login.jsx';
 import AuthenticationPage from './Home.jsx';
 import LogoutPage from './Logout.jsx';
 import DataGrid from './Parts.jsx';
-import { useAuth } from './hooks/useAuth.jsx'
+import { useAuth, AuthProvider } from './hooks/useAuth.jsx'
 
 
 const ProtectedRoute = ({ children }) => {
