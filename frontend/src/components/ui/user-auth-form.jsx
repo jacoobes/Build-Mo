@@ -8,17 +8,8 @@ import { Label } from "@/components/ui/label"
 
 //interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function UserAuthForm({ className, ...props } ) {
-  const [isLoading, setIsLoading] = React.useState(false)
-
-  async function onSubmit(event) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-  }
+export function UserAuthForm({ className, onSubmit, ...props }) {
+ 
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>

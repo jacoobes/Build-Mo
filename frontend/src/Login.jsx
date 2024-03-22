@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.jsx'
+import { Button } from '@/components/ui/button.jsx'
+import { Icons } from '@/components/ui/icons.jsx'
+import { Label } from '@/components/ui/label.jsx'
+import { Input } from '@/components/ui/input.jsx'
+import { cn } from '@/lib/utils'
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false)
 
-
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('http://localhost:5005/login', {
@@ -38,14 +43,43 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="h-screen flex items-center justify-center">
       {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
+      <div className={cn("grid gap-6")}>
+      <form onSubmit={onSubmit}>
+        <div className="grid gap-2">
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="email">
+              Email
+            </Label>
+            <Input
+              id="email"
+              placeholder="name@example.com"
+              type="email"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+              disabled={isLoading}
+            />
+            <Input
+              id="password"
+              placeholder=""
+              type="password"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+              disabled={isLoading}
+            />
+          </div>
+          <Button disabled={isLoading}>
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Log In with Email
+          </Button>
+        </div>
       </form>
+        </div>
     </div>
   );
 };

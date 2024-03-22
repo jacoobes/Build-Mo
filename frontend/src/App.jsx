@@ -34,6 +34,7 @@ const App = () => {
                 </ProtectedRoute> } />
             {/* Add more routes as needed */}
           </Routes>
+
       </AuthProvider>
     </Router>
   );
