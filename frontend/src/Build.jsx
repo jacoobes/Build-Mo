@@ -1,4 +1,4 @@
-export default Build = () => {
+export default () => {
    return (<div>
         todo
        </div>) 

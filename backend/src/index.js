@@ -1,11 +1,12 @@
     import express from 'express';
     import User from '../models/user.js';
-    import {connectDB, url, addItem, deleteItem, updateItem } from './db.js';
+    import {connectDB, url, addBuild, deleteBuild, updateBuild } from './db.js';
     import bcrypt from 'bcryptjs';
     import cors from 'cors';
     import session from 'express-session';
     import connectMongo from 'connect-mongo';
     import { ls_json, read_json } from './dataset.js';
+    import { v4 as uuidv4 } from 'uuid';
 
     const app = express();
 
@@ -32,7 +33,15 @@
         cookie: {
                 maxAge: 1000 * 60 * 60 * 24 // Session duration (1 day)
         },
-        unset: 'destroy'
+        unset: 'destroy',
+        genid: (req) => {
+            console.log('Generating session ID');
+            return uuidv4(); // Use any appropriate method to generate a session ID
+        },
+        cookie: {
+            secure: false, //Would need to be over https
+            sameSite: 'none'
+        }
     }));
 
     //Make sure the that 5005 can edit 3000
@@ -103,6 +112,7 @@
         }
     });
 
+
     app.post('/add-item', async (req, res) => {
         try {
             const { userId, itemData } = req.body;
@@ -136,6 +146,7 @@
             res.status(500).json({error: 'Failed to update'});
         }
     });
+
     //Fetching from json dataset
     app.get('/api/json/:name', async (req, res) => {
         const jsonName = req.params.name;

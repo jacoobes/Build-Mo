@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import Pcbuild from './pcbuild.js';
 
 const { Schema } = mongoose;
 
@@ -11,7 +12,12 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    builds: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Pcbuild',
+        required: true
+    }]
 });
 
 // Hash the password before saving the user for basic security
