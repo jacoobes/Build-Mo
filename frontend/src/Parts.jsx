@@ -1,5 +1,25 @@
 import React from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
+import { Button } from './components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+import { PlusIcon } from '@radix-ui/react-icons';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 //  return (
 //        <div> 
 //            <div>
@@ -115,9 +135,13 @@ const frameworks = [
 const DataGrid = () => {
     const [open, setOpen] = React.useState(false)
     const [values, setValue] = React.useState(null)
+    const addTo = (part) => {
+        console.log(part)
+    }
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
-        fetch("http://localhost:5005/api/json/cpu")
+        //http://localhost:5005/api/json/cpu
+        fetch("https://jsonplaceholder.typicode.com/todos")
         .then(res => res.json())
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
@@ -126,14 +150,44 @@ const DataGrid = () => {
         err ? (<p>{err}</p>)
             : values 
                 ? (   
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {values.map(s =>
-                       <Card>
-                            <CardContent> 
-                                {s.name}
-                            </CardContent>
-                        </Card> 
-                    )}
+                    <div>
+                        <h1 className="text-3xl">Parts</h1>
+                        <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
+                        <Table>
+                          <TableCaption>A list of your recent invoices.</TableCaption>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="w-[100px]">Name</TableHead>
+                              <TableHead>Price</TableHead>
+                              <TableHead>Add</TableHead>
+                              {/*<TableHead className="text-right">Add</TableHead>*/}
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {values.map(s => 
+                               <TableRow>
+                                    <TableCell className="font-medium">{s.title}</TableCell>
+                                    <TableCell className="font-medium">69.99</TableCell>
+                                    <TableCell>
+                                           <DropdownMenu>
+                                              <DropdownMenuTrigger>
+                                                <PlusIcon/>
+                                              </DropdownMenuTrigger>
+                                              <DropdownMenuContent>
+                                                <DropdownMenuLabel>Add to Build</DropdownMenuLabel>
+                                                <DropdownMenuSeparator />
+                                                {/* */}
+                                                <DropdownMenuItem>Profile</DropdownMenuItem>
+                                                <DropdownMenuItem>Billing</DropdownMenuItem>
+                                                <DropdownMenuItem>Team</DropdownMenuItem>
+                                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                                              </DropdownMenuContent>
+                                           </DropdownMenu> 
+                                    </TableCell>
+                                </TableRow> 
+                            )}
+                          </TableBody>
+                        </Table>
                     </div>
                 ) : <p>Loading...</p>
     );   
