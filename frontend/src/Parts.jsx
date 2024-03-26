@@ -135,6 +135,7 @@ const frameworks = [
 const DataGrid = () => {
     const [open, setOpen] = React.useState(false)
     const [values, setValue] = React.useState(null)
+    const [builds, setBuilds] = React.useState([]);
     const addTo = (part) => {
         console.log(part)
     }
@@ -145,7 +146,18 @@ const DataGrid = () => {
         .then(res => res.json())
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
+
+        fetch("mroute")
+        .then(res =>res.json())
+        .then(res => setBuilds(res))
+        .catch(() => console.error("dont worry about it now"))
     });
+    const addItem = (build) => {
+        return (event) => {
+            //todo:
+            // post a build to a route which will add an item to a user's build
+        }
+    }
     return (
         err ? (<p>{err}</p>)
             : values 
@@ -176,11 +188,16 @@ const DataGrid = () => {
                                               <DropdownMenuContent>
                                                 <DropdownMenuLabel>Add to Build</DropdownMenuLabel>
                                                 <DropdownMenuSeparator />
-                                                {/* */}
-                                                <DropdownMenuItem>Profile</DropdownMenuItem>
-                                                <DropdownMenuItem>Billing</DropdownMenuItem>
-                                                <DropdownMenuItem>Team</DropdownMenuItem>
-                                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                                                {builds.length  
+                                                    ? builds?.map(build => ( 
+                                                        <DropdownMenuItem onClick={addItem(build)}>
+                                                            {build.name ?? "Unnamed"}
+                                                        </DropdownMenuItem>
+                                                    )) 
+                                                    : <DropdownMenuItem >
+                                                        Get Building!
+                                                      </DropdownMenuItem>
+                                                }
                                               </DropdownMenuContent>
                                            </DropdownMenu> 
                                     </TableCell>
