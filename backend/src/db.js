@@ -14,7 +14,7 @@ async function connectDB() {
     }
 }
 
-async function addBuild(userId, itemData) {
+async function addItem(userId, itemData) {
     try {
         const newBuild = new Pcbuild({
             userId: userId,
@@ -32,7 +32,7 @@ async function addBuild(userId, itemData) {
     }
 }
 
-async function deleteBuild(userId, buildId) {
+async function deleteItem(userId, buildId) {
     try {
     await Pcbuild.findByIdAndDelete(buildId);
 
@@ -45,7 +45,7 @@ async function deleteBuild(userId, buildId) {
     }
 }
 
-async function updateBuild(userId, buildId, newBuildData) {
+async function updateItem(userId, buildId, newBuildData) {
     try {
         await Pcbuild.findByIdAndUpdate(buildId, newBuildData);
 
@@ -57,4 +57,5 @@ async function updateBuild(userId, buildId, newBuildData) {
 }
 
 
-export { connectDB, updateBuild, deleteBuild, addBuild, url } ;
+
+export { connectDB, updateItem, deleteItem, addItem, url } ;

@@ -9,6 +9,10 @@ const buildSchema = new Schema({
         ref: 'User',
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     items: [{
         type: String,
         required: true
