@@ -14,12 +14,34 @@ async function connectDB() {
     }
 }
 
+async function createNewBuild(userId) {
+    try {
+        const userIdObjectId = new mongoose.Types.ObjectId(userId);
+        const newBuild = new Pcbuild({
+            userId: userIdObjectId,
+            name: 'New Build', //Need to fix to prompt the user
+            items: []
+        });
+
+        await newBuild.save();
+        await User.findByIdAndUpdate(userIdObjectId, { $push: { builds: newBuild._id } });
+        return { success: true, message: 'New build created successfully', buildId: newBuild._id };
+    } catch (err){
+        console.error('Error creating build', err);
+        return { success: false, error: 'Error creating the build'};
+    }
+}
+
 async function addItem(userId, itemData) {
     try {
-        const newBuild = new Pcbuild({
-            userId: userId,
-            items: [itemData]
-        });
+        const ongoingBuild = await Pcbuild.findOne({ userId: userId, isCompleted: false });
+            if (ongoingBuild){
+                ongoingBuild.items.push(itemData);
+                await ongoingBuild.save();
+                return { success: true, message: 'Item added to ongoing build successfully' };
+            } else {
+
+            }
 
     await newBuild.save();
 
@@ -58,4 +80,4 @@ async function updateItem(userId, buildId, newBuildData) {
 
 
 
-export { connectDB, updateItem, deleteItem, addItem, url } ;
+export { connectDB, updateItem, deleteItem, addItem, url , createNewBuild } ;

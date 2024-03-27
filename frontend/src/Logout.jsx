@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 const Logout = () => {
   const navigate = useNavigate();
   const [itemName, setItemName] = useState('');
+  const [user, setUser] = useLocalStorage("user", null);
 
   const handleLogout = async () => {
     try {
@@ -22,72 +24,33 @@ const Logout = () => {
     }
   };
 
-  const handleAddItem = async () => {
+  const handleCreateNewBuild = async () => {
     try {
-      // Example of adding an item
-      const response = await fetch('http://localhost:5005/add-item', {
+        console.log(user.id);
+      const response = await fetch('http://localhost:5005/create-new-build', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId: 'userId', itemData: { name: 'New Item' } })
+        body: JSON.stringify({ userId: user.id})
       });
       if (response.ok) {
-        console.log('Item added successfully');
+        console.log('New build created successfully');
       } else {
-        console.error('Failed to add item');
+        console.error('Failed to create new build');
       }
     } catch (error) {
-      console.error('Error adding item:', error);
-    }
-  };
-
-  const handleDeleteItem = async (itemId) => {
-    try {
-      // Example of deleting an item
-      const response = await fetch(`http://localhost:5005/delete-item/${itemId}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        console.log('Item deleted successfully');
-      } else {
-        console.error('Failed to delete item');
-      }
-    } catch (error) {
-      console.error('Error deleting item:', error);
-    }
-  };
-
-  const handleUpdateItem = async (itemId, newItemData) => {
-    try {
-      // Example of updating an item
-      const response = await fetch(`http://localhost:5005/update-item/${itemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newItemData)
-      });
-      if (response.ok) {
-        console.log('Item updated successfully');
-      } else {
-        console.error('Failed to update item');
-      }
-    } catch (error) {
-      console.error('Error updating item:', error);
+      console.error('Error creating new build:', error);
     }
   };
 
   return (
-      <div style={{ marginTop: '20px' }}>
-        <h1>Click the buttons</h1>
-        <button onClick={handleLogout} style={{ marginRight: '10px' }}>Logout</button>
-        <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} placeholder="Enter item name" style={{ marginRight: '10px' }} />
-        <button onClick={handleAddItem} style={{ marginRight: '10px' }}>Add Item</button>
-        <button onClick={() => handleDeleteItem('itemIdToDelete')} style={{ marginRight: '10px' }}>Delete Item</button>
-        <button onClick={() => handleUpdateItem('itemIdToUpdate', { name: 'Updated Item' })}>Update Item</button>
-      </div>
-    );
-  };
+    <div style={{ marginTop: '20px' }}>
+      <h1>Click the buttons</h1>
+      <button onClick={handleLogout} style={{ marginRight: '10px' }}>Logout</button>
+      <button onClick={handleCreateNewBuild} style={{ marginRight: '10px' }}>Create New Build</button>
+    </div>
+  );
+};
 
 export default Logout;

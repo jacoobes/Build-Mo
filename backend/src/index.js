@@ -1,6 +1,6 @@
     import express from 'express';
     import User from '../models/user.js';
-    import {connectDB, url, addItem, deleteItem, updateItem } from './db.js';
+    import {connectDB, url, addItem, deleteItem, updateItem, createNewBuild} from './db.js';
     import bcrypt from 'bcryptjs';
     import cors from 'cors';
     import session from 'express-session';
@@ -95,7 +95,7 @@
 
             // Password is correct, authentication successful
             req.session.user = user; //Request the user session
-            res.json({ message: 'Authentication successful' });
+            res.json({ id: user._id });
         } catch (err) {
             console.error('Error authenticating user:', err);
             res.status(500).json({ error: 'Failed to authenticate user' });
@@ -112,6 +112,16 @@
         }
     });
 
+    app.post('/create-new-build', async (req, res) => {
+        try {
+            const { id: userId } = req.body;
+            const result = createNewBuild(userId);
+            res.json(result);
+        } catch (err) {
+            console.error('Error creating leh build:', err);
+            res.status(500).json({ error: 'Failed to create leh build' });
+        }
+    });
 
     app.post('/add-item', async (req, res) => {
         try {
