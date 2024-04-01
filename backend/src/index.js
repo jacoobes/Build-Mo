@@ -1,6 +1,6 @@
     import express from 'express';
     import User from '../models/user.js';
-    import {connectDB, url, addItem, deleteItem, updateItem, createNewBuild} from './db.js';
+    import {connectDB, url, addItem, deleteItem, updateItem, createNewBuild, getBuildsByUser} from './db.js';
     import bcrypt from 'bcryptjs';
     import cors from 'cors';
     import session from 'express-session';
@@ -12,7 +12,10 @@
 
     // Middleware to parse JSON bodies
     app.use(express.json());
-    app.use(cors());
+    app.use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true
+    }));
 
 
     // Connect to the MongoDB database
@@ -114,9 +117,13 @@
 
     app.post('/create-new-build', async (req, res) => {
         try {
-            const { id: userId } = req.body;
-            const result = createNewBuild(userId);
-            res.json(result);
+            const { userId, buildName } = req.body;
+            const result = await createNewBuild(userId, buildName);
+            if (result.success){
+                res.json({ ...result });
+            } else {
+                res.status(500).json({ error: "Failed to create build" });
+            }
         } catch (err) {
             console.error('Error creating leh build:', err);
             res.status(500).json({ error: 'Failed to create leh build' });
@@ -156,6 +163,18 @@
             res.status(500).json({error: 'Failed to update'});
         }
     });
+
+    app.get('/builds', async (req, res) => {
+        try {
+            const { userId } = req.query;
+            const builds = await getBuildsByUser(userId);
+            res.json(builds);
+        } catch (err) {
+            console.error('Error fetching the builds:', err);
+            res.status(500).json({ error: 'Failed to fetch builds' });
+        }
+    });
+
 
     //Fetching from json dataset
     app.get('/api/json/:name', async (req, res) => {

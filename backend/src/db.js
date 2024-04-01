@@ -14,12 +14,12 @@ async function connectDB() {
     }
 }
 
-async function createNewBuild(userId) {
+async function createNewBuild(userId, buildName) {
     try {
         const userIdObjectId = new mongoose.Types.ObjectId(userId);
         const newBuild = new Pcbuild({
             userId: userIdObjectId,
-            name: 'New Build', //Need to fix to prompt the user
+            name: buildName,
             items: []
         });
 
@@ -78,6 +78,19 @@ async function updateItem(userId, buildId, newBuildData) {
     }
 }
 
+async function getBuildsByUser(userId) {
+    try {
+        const userIdObjectId = new mongoose.Types.ObjectId(userId);
+        const builds = await Pcbuild.find({ userId: userIdObjectId });
+        console.log('The builds');
+        console.log(builds);
+
+        return builds;
+    } catch (err) {
+        console.error('Error fetching the builds:', err);
+        throw err;
+    }
+}
 
 
-export { connectDB, updateItem, deleteItem, addItem, url , createNewBuild } ;
+export { connectDB, updateItem, deleteItem, addItem, url, createNewBuild, getBuildsByUser } ;
