@@ -14,12 +14,34 @@ async function connectDB() {
     }
 }
 
+async function createNewBuild(userId, buildName) {
+    try {
+        const userIdObjectId = new mongoose.Types.ObjectId(userId);
+        const newBuild = new Pcbuild({
+            userId: userIdObjectId,
+            name: buildName,
+            items: []
+        });
+
+        await newBuild.save();
+        await User.findByIdAndUpdate(userIdObjectId, { $push: { builds: newBuild._id } });
+        return { success: true, message: 'New build created successfully', buildId: newBuild._id };
+    } catch (err){
+        console.error('Error creating build', err);
+        return { success: false, error: 'Error creating the build'};
+    }
+}
+
 async function addItem(userId, itemData) {
     try {
-        const newBuild = new Pcbuild({
-            userId: userId,
-            items: [itemData]
-        });
+        const ongoingBuild = await Pcbuild.findOne({ userId: userId, isCompleted: false });
+            if (ongoingBuild){
+                ongoingBuild.items.push(itemData);
+                await ongoingBuild.save();
+                return { success: true, message: 'Item added to ongoing build successfully' };
+            } else {
+
+            }
 
     await newBuild.save();
 
@@ -56,6 +78,19 @@ async function updateItem(userId, buildId, newBuildData) {
     }
 }
 
+async function getBuildsByUser(userId) {
+    try {
+        const userIdObjectId = new mongoose.Types.ObjectId(userId);
+        const builds = await Pcbuild.find({ userId: userIdObjectId });
+        console.log('The builds');
+        console.log(builds);
+
+        return builds;
+    } catch (err) {
+        console.error('Error fetching the builds:', err);
+        throw err;
+    }
+}
 
 
-export { connectDB, updateItem, deleteItem, addItem, url } ;
+export { connectDB, updateItem, deleteItem, addItem, url, createNewBuild, getBuildsByUser } ;
