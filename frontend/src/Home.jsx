@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.css';
 // Other imports as necessary
 
 export default function MainPage() {
