@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import './index.css';
 import { useState } from 'react'
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 
 export default function MainPage() {
@@ -10,8 +10,7 @@ export default function MainPage() {
     <div>
       <nav
         className="flex justify-between items-center px-4 py-4 text-black bg-white"
-        style={{ fontFamily: 'Poppins, sans-serif' }}
-      >
+        style={{ fontFamily: 'Poppins, sans-serif' }}>
         <div className="flex items-center space-x-4">
           <Link to="/" className="text-2xl font-bold">
             Build'Mo
@@ -31,8 +30,7 @@ export default function MainPage() {
         <div>
           <Link
             to="/login"
-            className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded"
-          >
+            className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded">
             Login
           </Link>
         </div>

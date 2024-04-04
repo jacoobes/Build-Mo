@@ -29,7 +29,6 @@ const App = () => {
             <Route path="/logout" element={<LogoutPage />} /> {}
             <Route path="/forums" element={<ForumPage/> } />
           </Routes>
-
       </AuthProvider>
     </Router>
   );
