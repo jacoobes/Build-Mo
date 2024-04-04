@@ -27,7 +27,7 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} /> {/* Use element prop */}
             <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
             <Route path="/logout" element={<LogoutPage />} /> {}
-            <Route path="/forum" element={<ForumPage/> } />
+            <Route path="/forums" element={<ForumPage/> } />
           </Routes>
 
       </AuthProvider>
