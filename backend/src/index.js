@@ -205,5 +205,13 @@
            .json(json_file)
     })
 
+    app.get("/api/forums", async (req, res) => {
+        res.status(200).json([]);
+    })
+
+    app.post("/api/forums", async (req, res) => {
+        res.status(200); 
+    })
+
     const PORT = process.env.PORT || 5005;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
