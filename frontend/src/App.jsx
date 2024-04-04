@@ -34,7 +34,6 @@ const App = () => {
             <Route path="/forums" element={<ForumPage/> } />
             <Route path="/build" element={<BuildPage />} />
             <Route path="/build/:buildId" element={<BuildDetail />} />
-            <Route path="/build" element={<BuildPage />} />
           </Routes>
 
       </AuthProvider>
