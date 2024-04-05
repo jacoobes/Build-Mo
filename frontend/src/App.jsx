@@ -7,6 +7,9 @@ import LogoutPage from './Logout.jsx';
 import DataGrid from './Parts.jsx';
 import { useAuth, AuthProvider } from './hooks/useAuth.jsx'
 import ForumPage from './components/forum.jsx';
+import BuildPage from './Build.jsx';
+import BuildDetail from './BuildDetail';
+import Navbar from './Navbar'; 
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -21,6 +24,7 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
+      <Navbar />
           <Routes> {/* Wrap Route components in Routes */}
             <Route path="/" element={<AuthenticationPage/>}/>
             <Route path="/parts" element = { <DataGrid/> } />
@@ -28,7 +32,10 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
             <Route path="/logout" element={<LogoutPage />} /> {}
             <Route path="/forums" element={<ForumPage/> } />
+            <Route path="/build" element={<BuildPage />} />
+            <Route path="/build/:buildId" element={<BuildDetail />} />
           </Routes>
+
       </AuthProvider>
     </Router>
   );
