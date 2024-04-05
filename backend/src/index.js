@@ -164,7 +164,7 @@
         }
     });
 
-    app.get('/builds', async (req, res) => {
+    app.get('/api/builds', async (req, res) => {
         try {
             const { userId } = req.query;
             const builds = await getBuildsByUser(userId);

@@ -59,7 +59,7 @@ const Logout = () => {
 
   const fetchBuilds = async (userId) => {
       try {
-        const response = await fetch(`http://localhost:5005/builds?userId=${user.id}`, {
+        const response = await fetch(`http://localhost:5005/api/builds?userId=${user.id}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
