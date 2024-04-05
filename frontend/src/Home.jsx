@@ -4,8 +4,26 @@ import './assets/scrollbar.css';
 import { useState } from 'react'
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import MB_ICON from'./assets/mb_icon2.png'
-import PC_DECON from './assets/case.jpg'
+import cpu from './assets/cpu.svg'
+import gpu from './assets/gpu.svg'
+import motherboard from './assets/mb.svg'
+import ram from './assets/ram.svg'
+import ssd from './assets/ssd.svg'
+import fan from './assets/fan.svg'
+import power_supply from './assets/power_supply.svg'
+import pc_case from './assets/pc_case.svg'
+import PC_DECON from './assets/case.png'
+import { Switch } from "@/components/ui/switch"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 
 
 export default function MainPage() {
@@ -13,21 +31,21 @@ export default function MainPage() {
   return (
     <div>
       
-      <div className="flex flex-col items-center justify-center h-screen bg-white text-black"
+      <div className="flex flex-col items-center justify-center h-screen bg-background text-foreground"
       style={{ fontFamily: 'Poppins, sans-serif' }}>
     <div className="min-h-screen flex flex-col ">
       
 
-      <section className="flex flex-col items-center justify-center flex-grow bg-background text-black mt-48 md:mt-80 mb-32 md:mb-24 lg:mb-48" style={{fontFamily: 'Poppins, sans-serif'}}>
+      <section className="flex flex-col items-center justify-center flex-grow bg-background text-foreground mt-48 md:mt-80 mb-32 md:mb-24 lg:mb-48" style={{fontFamily: 'Poppins, sans-serif'}}>
         <h1 className="text-4xl font-bold mb-4">Empower Your Setup</h1>
         <p className="text-lg mb-8">PC building made simple</p>
-        <Link to="/build" className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded mb-64">
+        <Link to="/build" className="bg-primary hover:bg-primary-hover text-foreground font-bold py-2 px-4 rounded mb-64">
           Get Started
         </Link>
 
       </section>
 
-      <section className="bg-background text-black " style={{ fontFamily: 'Poppins, sans-serif'}}>
+      <section className="bg-background text-foreground " style={{ fontFamily: 'Poppins, sans-serif'}}>
         <div className="container mx-auto px-4 flex flex-col items-center">
           <h2 className="text-3xl font-bold mb-2 text-center">Inside your PC</h2>
           <h3 className="text-xl mb-32">A deeper look at each essential component</h3>
@@ -35,8 +53,9 @@ export default function MainPage() {
 
             {/* CPU Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-full h-full rounded-none" src = {cpu} alt="CPU Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">CPU</h4>
               <p className="text-sm">
@@ -46,8 +65,9 @@ export default function MainPage() {
 
             {/* GPU Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-full h-full rounded-none" src = {gpu} alt="GPU Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">GPU</h4>
               <p className="text-sm">
@@ -57,9 +77,9 @@ export default function MainPage() {
 
             {/* MB Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
-                <img className="w-20 h-20 rounded-none" src= {MB_ICON} alt="Motherboard Icon"/>
+                <img className="w-20 h-20 rounded-none" src = {motherboard}  alt="Motherboard Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">Mother Board</h4>
               <p className="text-sm">
@@ -69,8 +89,9 @@ export default function MainPage() {
 
             {/* RAM Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-20 h-20 rounded-none" src = {ram}  alt="RAM Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">RAM</h4>
               <p className="text-sm">
@@ -80,8 +101,9 @@ export default function MainPage() {
 
             {/* Storage Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-20 h-20 rounded-none" src = {ssd}  alt="Storage Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">Storage</h4>
               <p className="text-sm">
@@ -91,8 +113,9 @@ export default function MainPage() {
 
             {/* Power Supply Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-20 h-20 rounded-none" src = {power_supply}  alt="Power Supply Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">Power Supply</h4>
               <p className="text-sm">
@@ -102,8 +125,9 @@ export default function MainPage() {
 
             {/* Cooling Syst Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-20 h-20 rounded-none" src = {fan}  alt="Cooling System Icon"/>
               </div>
               <h4 className="text-xl font-bold mb-2">Cooling System</h4>
               <p className="text-sm">
@@ -113,8 +137,10 @@ export default function MainPage() {
 
             {/* Case Component Box */}
             <div className=" p-6 rounded-lg shadow-md transition-transform duration-300 hover:translate-y-[-5px]">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {/* add icon */}
+                <img className="w-20 h-20 rounded-none" src = {pc_case}  alt="Case Icon"/>
+
               </div>
               <h4 className="text-xl font-bold mb-2">Case</h4>
               <p className="text-sm">
@@ -126,7 +152,7 @@ export default function MainPage() {
         </div>
       </section>
 
-      <section className="bg-background text-black py-64 px-4 md:mt-48" style={{fontFamily: 'Poppins, sans-serif'}}>
+      <section className="bg-background text-foreground py-64 px-4 md:mt-48" style={{fontFamily: 'Poppins, sans-serif'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="mr-48">
             {/* add image */}

@@ -10,6 +10,7 @@ import ForumPage from './components/forum.jsx';
 import BuildPage from './Build.jsx';
 import BuildDetail from './BuildDetail';
 import Navbar from './Navbar'; 
+import { ThemeProvider} from './components/ThemeProvider.jsx';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -23,6 +24,7 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   return (
     <Router>
+      <ThemeProvider>
       <AuthProvider>
       <Navbar />
           <Routes> {/* Wrap Route components in Routes */}
@@ -37,6 +39,7 @@ const App = () => {
           </Routes>
 
       </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 };
