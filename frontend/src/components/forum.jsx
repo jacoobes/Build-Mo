@@ -8,26 +8,30 @@ const fakePosts = [
   {
     userId: '642a9b9c8e6b9f0d2c8d6e7a',
     title: 'Beach Day',
+    id: 1,
     text: 'Had a great time at the beach today! #summervibes',
     pictures: [
-      'https://picsum.photos/400',
+      'https://picsum.photos/250',
     ]
   },
   {
     userId: '642a9b9c8e6b9f0d2c8d6e7b',
     title: 'Book Recommendation',
+    id: 2,
     text: 'Just finished reading a fascinating book. Highly recommend it!',
     pictures: ['https://picsum.photos/200/300']
   },
   {
     userId: '642a9b9c8e6b9f0d2c8d6e7c',
     title: 'New Recipe',
+    id: 3,
     text: 'Trying out a new recipe for dinner tonight. Wish me luck!',
     pictures: []
   },
   {
     userId: '642a9b9c8e6b9f0d2c8d6e7a',
     title: 'Morning Hike',
+    id: 4,
     text: 'Had an amazing hike this morning. Nature is truly beautiful.',
     pictures: [
       'https://picsum.photos/200',
@@ -52,7 +56,9 @@ const ForumPage = () => {
            
        }
     }
-
+    const onClickCard = (card) => {
+        navigate("/forums/"+card.id)
+    }
   return (
     <div className="container mx-auto py-8">
       <Card className="mb-8">
@@ -66,21 +72,18 @@ const ForumPage = () => {
         </CardContent>
       </Card>
       {posts.map(post => 
-            (<Card>
+            (<Card className="hover:bg-gray-100" onClick={() => onClickCard(post)}>
                 <CardHeader>
                   <CardTitle className="text-2xl">{post.title ?? "fix me"}</CardTitle>
-                  <p className="text-sm">{post.user ?? "Leroy"}</p>
+                  <p className="text-sm mt-4 text-gray-500">{post.user ?? "Leroy"}</p>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-row space-x-4">
                     {post.pictures.length 
                         ? <img src={post.pictures[0]}/>
                         : "" }
-                    <div className="flex items-center mb-4">  
-                        <div>
-                            
-                        </div>
+                    <div className="flex mb-4">  
+                        <span>{post.text}</span>
                     </div>
-                    <Button variant="secondary">Comment</Button>
                 </CardContent>
           </Card>
         ))}

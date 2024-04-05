@@ -7,6 +7,7 @@ import LogoutPage from './Logout.jsx';
 import DataGrid from './Parts.jsx';
 import { useAuth, AuthProvider } from './hooks/useAuth.jsx'
 import ForumPage from './components/forum.jsx';
+import Post from './components/forumpost.jsx';
 import BuildPage from './Build.jsx';
 import BuildDetail from './BuildDetail';
 import Navbar from './Navbar'; 
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
             <Route path="/logout" element={<LogoutPage />} /> {}
             <Route path="/forums" element={<ForumPage/> } />
+            <Route path="/forums/:forumId" element={<Post/> } />
             <Route path="/build" element={<BuildPage />} />
             <Route path="/build/:buildId" element={<BuildDetail />} />
           </Routes>
