@@ -205,10 +205,18 @@
            .json(json_file)
     })
 
+    //get single forum by id
+    app.get("/api/forums/:id", async (Req, res) => {
+        res.status(200).json({ 
+            bofa: "deez"
+        });
+
+    })
+    //todo: Get all forums
     app.get("/api/forums", async (req, res) => {
         res.status(200).json([]);
     })
-
+    //todo: Create new forum
     app.post("/api/forums", async (req, res) => {
         res.status(200); 
     })
