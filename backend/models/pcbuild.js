@@ -14,7 +14,8 @@ const buildSchema = new Schema({
         required: true
     },
     items: [{
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'BuildItem',
         required: true
     }]
 });
