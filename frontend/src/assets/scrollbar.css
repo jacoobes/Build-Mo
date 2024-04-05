@@ -1,0 +1,33 @@
+
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track of the scrollbar */
+  ::-webkit-scrollbar-track {
+    background: #e6e5eb00;
+  }
+  
+  /* Handle of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    background: #303030;
+    height: 50px;
+    
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #303030
+  }
+
+  ::-webkit-scrollbar-button{
+    background: #e6e5eb00;
+  }
+
+
+
+
+
+  
