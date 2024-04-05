@@ -11,30 +11,12 @@ import PC_DECON from './assets/case.jpg'
 export default function MainPage() {
 
   return (
+    <div>
+      
+      <div className="flex flex-col items-center justify-center h-screen bg-white text-black"
+      style={{ fontFamily: 'Poppins, sans-serif' }}>
     <div className="min-h-screen flex flex-col ">
-      <nav className="flex justify-between items-center px-4 py-4 text-black bg-background border-b-2 border-border" style={{ fontFamily: 'Poppins, sans-serif' }}>
-        <div className="flex items-center space-x-4">
-          <Link to="/" className="text-2xl font-bold">
-            Build'Mo
-          </Link>
-        </div>
-        <div className="flex items-center justify-between space-x-20 text-xl font-medium">
-          <Link to="/build" className="hover:text-gray-300">
-            Build
-          </Link>
-          <Link to="/parts" className="hover:text-gray-300">
-            Parts
-          </Link>
-          <Link to="/forums" className="hover:text-gray-300">
-            Forums
-          </Link>
-        </div>
-        <div className="mr-12">
-          <Link to="/login" className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded">
-            Login
-          </Link>
-        </div>
-      </nav>
+      
 
       <section className="flex flex-col items-center justify-center flex-grow bg-background text-black mt-48 md:mt-80 mb-32 md:mb-24 lg:mb-48" style={{fontFamily: 'Poppins, sans-serif'}}>
         <h1 className="text-4xl font-bold mb-4">Empower Your Setup</h1>
@@ -146,7 +128,7 @@ export default function MainPage() {
 
       <section className="bg-background text-black py-64 px-4 md:mt-48" style={{fontFamily: 'Poppins, sans-serif'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="mr-12">
+          <div className="mr-48">
             {/* add image */}
             <img class="h-auto max-w-full rounded-none" src={PC_DECON} alt="Computer Deconstructed"/>
           </div>
@@ -160,6 +142,11 @@ export default function MainPage() {
         </div>
       </section>
 
+        </div>
+      </div> 
     </div>
   );
 }
+
+
+
