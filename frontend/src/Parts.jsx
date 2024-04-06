@@ -32,17 +32,13 @@ import {
 const DataGrid = () => {
     const [values, setValue] = React.useState([])
     const [builds, setBuilds] = React.useState([]);
-    const [selectedCategory, setSelectedCategory] = React.useState("todos");
-    const [categories, setCategories] = React.useState("todos");
+    const [selectedCategory, setSelectedCategory] = React.useState("cpu");
+    const [categories, setCategories] = React.useState("cpu");
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
-//        fetch()
-//        .then(setCategories)
-//        .catch(console.error)
-    }, [])
-    React.useEffect(() => {
+        console.log(selectedCategory)
         //http://localhost:5005/api/json/cpu
-        fetch("https://jsonplaceholder.typicode.com/"+"todos")
+        fetch("http://localhost:5005/api/json/"+selectedCategory)
         .then(res => res.json())
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
@@ -52,7 +48,6 @@ const DataGrid = () => {
 //        .then(res => setBuilds(res))
 //        .catch(() => { 
 //
-//            console.error("dont worry about it now")
 //        })
     }, [selectedCategory]);
     const addItem = (build) => {
@@ -66,7 +61,7 @@ const DataGrid = () => {
             : values 
                 ? (
             <div className="flex flex-row min-h-screen">
-                <aside className="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500">
+                <aside className="sidebar w-64 md:shadow transform-translate-x-full md:translate-x-0 transition-transform duration-150 ease-in">
                   <Command>
                         <CommandInput placeholder="Search categories"/>
                         <CommandList>
@@ -75,37 +70,35 @@ const DataGrid = () => {
                                 <CommandItem onSelect={setSelectedCategory}>
                                     <span>Case Accesories</span>
                                 </CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Case Fans</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Case</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} >Cpu Coolers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Cpu</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>External HDD</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Fan Controllers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Headphones</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Internal HDD</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Keyboard</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Memory</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Monitors</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Motherboards</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Mouse</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Optical Drive</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>OS</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Power Supply</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Sound Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Speakers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Thermal Paste</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Ups</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Video Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Webcam</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Wired Network Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory}>Wireless Network Card</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="case">Case</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="cpu-coolers">Cpu Coolers</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="cpu">Cpu</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="external-hdd">External HDD</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="fan-controllers">Fan Controllers</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="headphones">Headphones</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="internal-hdd">Internal HDD</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="keyboard">Keyboard</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="memory">Memory</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="monitors">Monitors</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="motherboards">Motherboards</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="mouse">Mouse</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="optical-drive">Optical Drive</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="os">OS</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="power-supply">Power Supply</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="sound-card">Sound Card</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="speakers">Speakers</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="thermal-paste">Thermal Paste</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="ups">Ups</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="video-card">Video Card</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="webcam">Webcam</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="wired-network-card">Wired Network Card</CommandItem>
                         </CommandGroup>
                       </CommandList>
                     </Command>
                 </aside>
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
                 <div class="main-content flex flex-col flex-grow p-4">
-                    <h1 class="font-bold text-2xl text-gray-700">{selectedCategory}</h1>
+                    <h1 class="font-bold text-2xl">{selectedCategory}</h1>
                     <div className="h-[63vh] relative overflow auto">
                     <Table>
                       <TableCaption>Parts</TableCaption>
@@ -120,8 +113,8 @@ const DataGrid = () => {
                       <TableBody>
                         {values.map(s => 
                            <TableRow>
-                                <TableCell className="font-medium">{s.title}</TableCell>
-                                <TableCell className="font-medium">69.99</TableCell>
+                                <TableCell className="font-medium">{s.name}</TableCell>
+                                <TableCell className="font-medium">{s.price ? `$${s.price}` : "--"}</TableCell>
                                 <TableCell>
                                        <DropdownMenu>
                                           <DropdownMenuTrigger>
@@ -142,14 +135,13 @@ const DataGrid = () => {
                                           </DropdownMenuContent>
                                        </DropdownMenu> 
                                 </TableCell>
-                            </TableRow> 
-                        )}
+                            </TableRow> )}
                       </TableBody>
                     </Table>
                     </div>
                 </div>
-                                </div>
-                ) : <p>Loading...</p>
+            </div>) 
+        : <p>Loading...</p>
     ); 
    
 }

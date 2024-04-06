@@ -25,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   return (
     <Router>
-      <ThemeProvider>
+      <ThemeProvider defaultTheme = "dark">
       <AuthProvider>
       <Navbar />
           <Routes> {/* Wrap Route components in Routes */}

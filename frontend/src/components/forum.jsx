@@ -61,7 +61,7 @@ const ForumPage = () => {
     }
   return (
     <div className="container mx-auto py-8">
-      <Card className="mb-8">
+      <Card className="card mb-8">
         <CardHeader>
           <CardTitle className="text-xl">Create a New Post</CardTitle>
         </CardHeader>
@@ -72,15 +72,13 @@ const ForumPage = () => {
         </CardContent>
       </Card>
       {posts.map(post => 
-            (<Card className="hover:bg-gray-100" onClick={() => onClickCard(post)}>
+            (<Card className="hover:bg-border bg-card" onClick={() => onClickCard(post)}>
                 <CardHeader>
                   <CardTitle className="text-2xl">{post.title ?? "fix me"}</CardTitle>
-                  <p className="text-sm mt-4 text-gray-500">{post.user ?? "Leroy"}</p>
+                  <p className="text-secondary text-sm mt-4 ">{post.user ?? "Leroy"}</p>
                 </CardHeader>
                 <CardContent className="flex flex-row space-x-4">
-                    {post.pictures.length 
-                        ? <img src={post.pictures[0]}/>
-                        : "" }
+                    {post.pictures.length  && <img src={post.pictures[0]}/>}
                     <div className="flex mb-4">  
                         <span>{post.text}</span>
                     </div>

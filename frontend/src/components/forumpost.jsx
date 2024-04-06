@@ -66,16 +66,14 @@ const Post = () => {
           <div className="mt-4">
             <Carousel>
               <CarouselContent>
-                {post.pictures.map((picture, index) => (
-                    <CarouselItem>
-                        <img key={index} src={picture} alt={`Picture ${index}`} className="mb-4" />
-                    </CarouselItem>
-                ))}
+                {post.pictures.map((picture, index) => 
+                (<CarouselItem>
+                    <img key={index} src={picture} alt={`Picture ${index}`} className="mb-4" />
+                </CarouselItem>))}
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
-            
           </div>
           <div className="mt-4 text-gray-500">
             <span>Posted by User {post.userId}</span>
