@@ -39,7 +39,6 @@ const App = () => {
             <Route path="/build" element={<BuildPage />} />
             <Route path="/build/:buildId" element={<BuildDetail />} />
           </Routes>
-
       </AuthProvider>
       </ThemeProvider>
     </Router>

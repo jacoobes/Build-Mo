@@ -11,10 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DropdownMenuRadioGroupDemo } from "./components/ui/radiogroup";
+import {useAuth} from "@/hooks/useAuth.jsx";
+import {useLocalStorage} from "@/hooks/useLocalStorage.jsx";
 
 
 
 const Navbar = () => {
+    const [usr, setUser] = useLocalStorage("user", null)
   return (
     <nav className="flex justify-between items-center px-4 py-4 text-foreground bg-background border-b-2 border-border" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <div className="flex items-center space-x-4">
@@ -30,10 +33,14 @@ const Navbar = () => {
       <div className="flex items-center space-x-6 mr-6">
         <DropdownMenuRadioGroupDemo>
         </DropdownMenuRadioGroupDemo>
-        <div className="mr-4">
+          {usr ?
+          <div className="mr-4">
+              <Link to="/logout" className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded">Logout</Link>
+          </div>
+              :
+          <div className="mr-4">
           <Link to="/login" className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded">Login</Link>
-        </div>
-
+        </div>}
       </div>
     </nav>
   );

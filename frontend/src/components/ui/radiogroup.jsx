@@ -11,10 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {useTheme} from "@/components/ThemeProvider.jsx";
 
 export function DropdownMenuRadioGroupDemo() {
   const [position, setPosition] = React.useState("bottom");
-
+  const {theme, setTheme} = useTheme()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,8 +24,8 @@ export function DropdownMenuRadioGroupDemo() {
         >Theme</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value="os_def">OS Default</DropdownMenuRadioItem>
+        <DropdownMenuRadioGroup value={position} onValueChange={setTheme}>
+          <DropdownMenuRadioItem value="system">OS Default</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

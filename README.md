@@ -16,18 +16,12 @@ Any package manager can be used with this project (e.g. npm, yarn or pnpm).
 
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Redux Toolkit](https://redux-toolkit.js.org/)
-- [Axios](https://axios-http.com/)
 - [React Router DOM](https://reactrouter.com/)
 - [Vitest](https://vitest.dev/)
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Express](https://expressjs.com/)
 - [mongoose](https://mongoosejs.com/)
 - [bcrypt.js](https://www.npmjs.com/package/bcryptjs)
-- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 - [express-async-handler](https://www.npmjs.com/package/express-async-handler)
-
-#### The dependency versions are managed by [depfu](https://depfu.com/).
 
 ## Requirements
 

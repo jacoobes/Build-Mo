@@ -29,6 +29,10 @@ export const AuthProvider = ({ children }) => {
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+/**
+ *
+ * @return {ReturnType<typeof AuthProvider>}
+ */
 export const useAuth = () => {
   return useContext(AuthContext);
 };
