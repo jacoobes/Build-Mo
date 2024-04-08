@@ -16,7 +16,7 @@ const BuildDetail = () => {
 
   useEffect(() => {
     // api call from Parts.jsx idk someone can fix 
-    fetch(`http://localhost:5000/api/builds/${buildId}`)
+    fetch(`/api/builds/${buildId}`)
       .then((res) => res.json())
       .then((data) => {
         setBuild(data);

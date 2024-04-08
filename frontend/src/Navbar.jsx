@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { DropdownMenuRadioGroupDemo } from "./components/ui/radiogroup";
 import {useAuth} from "@/hooks/useAuth.jsx";
-import {useLocalStorage} from "@/hooks/useLocalStorage.jsx";
+import {useLocalStorage, useSessionStorage} from "@/hooks/useLocalStorage.jsx";
 
 
 
 const Navbar = () => {
-    const [usr, setUser] = useLocalStorage("user", null)
+    const usr = null
   return (
     <nav className="flex justify-between items-center px-4 py-4 text-foreground bg-background border-b-2 border-border" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <div className="flex items-center space-x-4">

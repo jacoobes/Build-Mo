@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      "/api": "Enter your backend host with port inside the quotes",
+      "/api": "http://localhost:5005",
     },
   },
   plugins: [
@@ -29,11 +29,5 @@ export default defineConfig({
   },
   build: {
     outDir: "./build",
-  },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    css: true,
-    setupFiles: "./src/test/setup.js",
-  },
+  }
 });
