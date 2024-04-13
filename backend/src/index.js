@@ -77,6 +77,10 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+app.get('/api/is-auth', async (req, res) => {
+    res.json({ yes: req.session });
+});
+
 // Route to authenticate user
 app.post('/api/login', async (req, res) => {
     try {
@@ -171,8 +175,7 @@ app.put('/update-item/:itemId', async (req, res) => {
 
 app.get('/api/builds', isLoggedIn, async (req, res) => {
     try {
-        console.log("user accessed yah")
-        console.log(req.session)
+
         const builds = await getBuildsByUser(req.session._id);
         res.json(builds);
     } catch (err) {

@@ -32,7 +32,7 @@ const Login = () => {
         console.log('Response data:', data); // Log the response status
         console.log(data); // handle success, maybe redirect
         await login({ username, id: data.id });
-        navigate('/logout');
+        navigate('/build');
       } else {
         setError('There is an issue with the response');
         console.log(await response.json())

@@ -3,14 +3,7 @@ import BuildTile from './BuildTile';
 
 
 const Build = () => {
-    const [builds, setBuilds] = React.useState([
-        { id: 1, title: 'Build 1' },
-        { id: 2, title: 'Build 2' },
-        { id: 3, title: 'Build 3' },
-        { id: 4, title: 'Build 4' },
-        { id: 5, title: 'Build 5' },
-        { id: 6, title: 'Build 6' },
-    ]);
+    const [builds, setBuilds] = React.useState([]);
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
         fetch("/api/builds")

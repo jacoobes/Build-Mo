@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useAuth } from './hooks/useAuth';
 
 const Logout = () => {
   const navigate = useNavigate();
   const [itemName, setItemName] = useState('');
   const [buildList, setBuildList] = useState([]);
-
+  const { logout } = useAuth()
 
 
   const handleLogout = async () => {
@@ -16,6 +17,7 @@ const Logout = () => {
         credentials: 'include', // Include cookies in the request
       });
       if (response.ok) {
+        logout()
         // Redirect to login page after logout
         navigate('/login');
       } else {
