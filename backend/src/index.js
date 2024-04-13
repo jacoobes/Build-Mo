@@ -1,10 +1,15 @@
 import express from 'express';
 import User from '../models/user.js';
+import Post from '../models/post.js'
+import Comment from '../models/comment.js'
 import {addItem, connectDB, createNewBuild, deleteItem, getBuildsByUser, updateItem, url} from './db.js';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
+import path from 'path'
 import {ls_json, read_json} from './dataset.js';
 import cookieParser from "cookie-parser";
+import multer from 'multer'
+const upload = multer({ dest: "./uploads" })
 
 function isLoggedIn(req, res, next) {
     if (req.session) {
@@ -219,19 +224,40 @@ app.get('/api/categories', async (_, res) => {
 })
 
 //get single forum by id
-app.get("/api/forums/:id", async (Req, res) => {
+app.get("/api/posts/:id", async (Req, res) => {
     res.status(200).json({
         bofa: "deez"
     });
 
 })
-//todo: Get all forums
-app.get("/api/forums", async (req, res) => {
-    res.status(200).json([]);
+//todo: Get all posts
+app.get("/api/posts", isLoggedIn, async (req, res) => {
+   const posts = await Post.find()
+      .populate("comments")
+      .populate("userId", "name email")
+      .sort({ "comments.length": -1 });
+    res.status(200).json(posts);
 })
+
 //todo: Create new forum
-app.post("/api/forums", async (req, res) => {
-    res.status(200);
+app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res) => {
+  try {
+    const { title, text } = req.body;
+    const pictures = req.files.map((file) => path.join('/uploads', file.filename));
+    const post = new Post({
+      userId: req.session.user._id,
+      title,
+      text,
+      pictures,
+    });
+
+    await post.save();
+
+    res.status(201).json(post);
+  } catch (error) {
+    console.error('Error creating post:', error);
+    res.status(500).json({ message: 'Error creating post' });
+  }    res.status(200);
 })
 
 const PORT = process.env.PORT || 5005;

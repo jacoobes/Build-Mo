@@ -6,9 +6,10 @@ import AuthenticationPage from './Home.jsx';
 import LogoutPage from './Logout.jsx';
 import DataGrid from './Parts.jsx';
 import { useAuth, AuthProvider } from './hooks/useAuth.jsx'
-import ForumPage from './components/forum.jsx';
+import PostPage from './components/forum.jsx';
 import Post from './components/forumpost.jsx';
 import BuildPage from './Build.jsx';
+import ForumCreate from './ForumCreate.jsx';
 import BuildDetail from './BuildDetail';
 import Navbar from './Navbar'; 
 import { ThemeProvider} from './components/ThemeProvider.jsx';
@@ -34,8 +35,9 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} /> {/* Use element prop */}
             <Route path="/login" element={<LoginPage />} /> {/* Use element prop */}
             <Route path="/logout" element={<LogoutPage />} /> {}
-            <Route path="/forums" element={<ForumPage/> } />
-            <Route path="/forums/:forumId" element={<Post/> } />
+            <Route path="/posts" element={<PostPage/> } />
+            <Route path="/posts/:postId" element={<Post/> } />
+            <Route path="/post-create" element={<ForumCreate/> } />
             <Route path="/build" element={<BuildPage />} />
             <Route path="/build/:buildId" element={<BuildDetail />} />
           </Routes>

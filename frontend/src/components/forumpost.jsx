@@ -12,11 +12,12 @@ import {
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { useAuth } from '@/hooks/useAuth';
 
 const Post = () => {
-  const { forumId } = useParams();
+  const { postId } = useParams();
   const nav = useNavigate();
-  const [usr] = useLocalStorage("user", null);
+  const {  user } = useAuth()
   const [comment, setComment] = useState("");
   const [post, setPost] = useState({ 
         userId: '642a9b9c8e6b9f0d2c8d6e7b',
@@ -45,7 +46,7 @@ const Post = () => {
     setComment("");
   }
   useEffect(() => {
-      if(Number.isNaN(Number.parseInt(forumId))) {
+      if(Number.isNaN(Number.parseInt(postId))) {
         nav("/")
       } else {
      // fetch("http://localhost:5005/api/forums/"+forumId)

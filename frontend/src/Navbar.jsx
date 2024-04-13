@@ -28,7 +28,7 @@ const Navbar = () => {
       <div className="flex-1 flex justify-center space-x-20 text-xl font-medium">
         <Link to="/build" className="hover:text-gray-300">Build</Link>
         <Link to="/parts" className="hover:text-gray-300">Parts</Link>
-        <Link to="/forums" className="hover:text-gray-300">Forums</Link>
+        <Link to="/posts" className="hover:text-gray-300">Forums</Link>
       </div>
 
       <div className="flex items-center space-x-6 mr-6">
