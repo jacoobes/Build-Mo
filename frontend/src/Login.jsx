@@ -17,7 +17,7 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5005/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,10 +32,10 @@ const Login = () => {
         console.log('Response data:', data); // Log the response status
         console.log(data); // handle success, maybe redirect
         await login({ username, id: data.id });
-        navigate('/logout');
+        navigate('/build');
       } else {
         setError('There is an issue with the response');
-        alert(error)
+        console.log(await response.json())
       }
     } catch (error) {
       setError('Something went wrong. Sorry idk');

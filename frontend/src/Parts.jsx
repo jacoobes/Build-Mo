@@ -38,7 +38,7 @@ const DataGrid = () => {
     React.useEffect(() => {
         console.log(selectedCategory)
         //http://localhost:5005/api/json/cpu
-        fetch("http://localhost:5005/api/json/"+selectedCategory)
+        fetch("/api/json/"+selectedCategory)
         .then(res => res.json())
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))

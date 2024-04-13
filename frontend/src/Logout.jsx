@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useAuth } from './hooks/useAuth';
 
 const Logout = () => {
   const navigate = useNavigate();
   const [itemName, setItemName] = useState('');
-  const [user, setUser] = useLocalStorage("user", null);
   const [buildList, setBuildList] = useState([]);
+  const { logout } = useAuth()
 
-  useEffect(() => {
-    fetchBuilds();
-  }, [user.id]);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5005/logout', {
-        method: 'GET',
+      const response = await fetch('/api/logout', {
+        method: 'POST',
         credentials: 'include', // Include cookies in the request
       });
       if (response.ok) {
+        logout()
         // Redirect to login page after logout
         navigate('/login');
       } else {
@@ -28,7 +27,10 @@ const Logout = () => {
       console.error('Error logging out:', error);
     }
   };
-
+  useEffect(() => {
+    fetchBuilds();
+    handleLogout()
+  }, []);
   const handleCreateNewBuild = async () => {
     try {
       const buildName = prompt("Enter the name for your new build:");
@@ -37,7 +39,7 @@ const Logout = () => {
         return;
       }
       console.log(buildName);
-      const response = await fetch('http://localhost:5005/create-new-build', {
+      const response = await fetch('/create-new-build', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -59,8 +61,7 @@ const Logout = () => {
 
   const fetchBuilds = async (userId) => {
       try {
-        const response = await fetch(`http://localhost:5005/api/builds?userId=${user.id}`, {
-          method: 'GET',
+        const response = await fetch(`/api/builds`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
