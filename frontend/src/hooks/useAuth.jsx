@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
 
   // call this function when you want to authenticate the user
   const login = async (data) => {
-    setAuth(true);
     navigate("/build");
   };
 
