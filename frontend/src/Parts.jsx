@@ -97,8 +97,8 @@ const DataGrid = () => {
                     </Command>
                 </aside>
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
-                <div class="main-content flex flex-col flex-grow p-4">
-                    <h1 class="font-bold text-2xl">{selectedCategory}</h1>
+                <div className="main-content flex flex-col flex-grow p-4">
+                    <h1 className="font-bold text-2xl">{selectedCategory}</h1>
                     <div className="h-[63vh] relative overflow auto">
                     <Table>
                       <TableCaption>Parts</TableCaption>
