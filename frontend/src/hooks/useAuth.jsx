@@ -13,7 +13,8 @@ export const AuthProvider = ({ children }) => {
 
   // call this function when you want to authenticate the user
   const login = async (data) => {
-    navigate("/build");
+        setAuth(true)
+        navigate("/build");
   };
 
   // call this function to sign out logged in user

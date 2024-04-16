@@ -19,7 +19,6 @@ const ForumPage = () => {
         .catch(console.error)
     }, [])
     const handleSubmit = (post) => {
-       console.log(user)
        if(!user) {
            navigate("/login");    
        } else {

@@ -120,6 +120,7 @@ app.post('/api/logout', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                console.log("destroyed")
                 res.json({message: 'Session is destroyed'})
             }
         });
