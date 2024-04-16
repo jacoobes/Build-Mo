@@ -4,8 +4,10 @@ import {
   Table, 
   TableBody, 
   TableCell, 
-  TableHead, 
-  TableRow 
+  TableHeader,  
+  TableHead,
+  TableRow ,
+    TableCaption
 } from "@/components/ui/table";
 
 const BuildDetail = () => {
@@ -16,7 +18,7 @@ const BuildDetail = () => {
 
   useEffect(() => {
     // api call from Parts.jsx idk someone can fix 
-    fetch(`/api/builds/${buildId}`)
+    fetch(`/api/builds/${buildId}`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setBuild(data);
@@ -34,23 +36,28 @@ const BuildDetail = () => {
   if (!build) return <p>Build not found.</p>;
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">{build.name}</h1>
+    <div>
+      <h2 className="text-3xl font-bold mb-4">{build.name}</h2>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell className="w-[100px]">Part Name</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {build.items.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>{item}</TableCell>
+          <TableCaption>Your PC Parts</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Invoice</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Method</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="font-medium">INV001</TableCell>
+              <TableCell>Paid</TableCell>
+              <TableCell>Credit Card</TableCell>
+              <TableCell className="text-right">$250.00</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
   );
 };
 

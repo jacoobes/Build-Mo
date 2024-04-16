@@ -43,12 +43,11 @@ const DataGrid = () => {
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
 
-//        fetch("mroute")
-//        .then(res =>res.json())
-//        .then(res => setBuilds(res))
-//        .catch(() => { 
-//
-//        })
+//      fetch("mroute")
+//      .then(res =>res.json())
+//      .then(res => setBuilds(res))
+//      .catch(() => { 
+//      })
     }, [selectedCategory]);
     const addItem = (build) => {
         return (event) => {

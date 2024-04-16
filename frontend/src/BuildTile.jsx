@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const BuildTile = ({ buildId, title }) => {
   const navigate = useNavigate();
-
   const goToBuildDetails = () => {
     navigate(`/build/${buildId}`);
   };

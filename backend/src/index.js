@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/user.js';
 import Post from '../models/post.js'
+import Pcbuild from '../models/pcbuild.js'
 import Comment from '../models/comment.js'
 import {addItem, connectDB, createNewBuild, deleteItem, getBuildsByUser, updateItem, url} from './db.js';
 import session from 'express-session';
@@ -130,10 +131,10 @@ app.post('/api/logout', (req, res) => {
     }
 });
 
-app.post('/create-new-build', async (req, res) => {
+app.post('/api/create-new-build', isLoggedIn, async (req, res) => {
     try {
-        const {userId, buildName} = req.body;
-        const result = await createNewBuild(userId, buildName);
+        const {buildName} = req.body;
+        const result = await createNewBuild(req.session.user._id, buildName);
         if (result.success) {
             res.json({...result});
         } else {
@@ -178,11 +179,31 @@ app.put('/update-item/:itemId', async (req, res) => {
         res.status(500).json({error: 'Failed to update'});
     }
 });
+// Get a single build by ID
+app.get('/api/builds/:id', isLoggedIn, async (req, res) => {
+  try {
+    const buildId = req.params.id;
+
+    // Find the build by ID and check if the user is the owner
+    const build = await Pcbuild.findById(buildId)
+      //.populate('user', 'name email')
+      //.populate('parts');
+
+    if (!build) {
+      return res.status(404).json({ message: 'Build not found' });
+    }
+
+    res.status(200).json(build);
+  } catch (error) {
+    console.error('Error getting build:', error);
+    res.status(500).json({ message: 'Error getting build' });
+  }
+});
 
 app.get('/api/builds', isLoggedIn, async (req, res) => {
     try {
-
-        const builds = await getBuildsByUser(req.session._id);
+        
+        const builds = await getBuildsByUser(req.session.user._id);
         res.json(builds);
     } catch (err) {
         console.error('Error fetching the builds:', err);
