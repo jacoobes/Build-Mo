@@ -20,22 +20,7 @@ const Post = () => {
   const { user } = useAuth()
   const [comment, setComment] = useState("");
   const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      userId: '642a9b9c8e6b9f0d2c8d6e7a',
-      content: 'This is a great book recommendation!',
-      createdAt: '2023-04-05T12:00:00.000Z',
-    },
-    {
-      id: 2,
-      userId: '642a9b9c8e6b9f0d2c8d6e7b',
-      content: "I've been meaning to read this book, thanks for the recommendation!",
-      createdAt: '2023-04-05T12:30:00.000Z',
-    },
-  ]);
-
-  const submitComment = (e) => {
+    const submitComment = (e) => {
     e.preventDefault();
     setComment("");
   }
@@ -44,7 +29,6 @@ const Post = () => {
         .then((post) => {
             return post.json()
         }).then(jsn => {
-            console.log(jsn)
             setPost(jsn) 
         })
         .catch(() => console.error("shit went bad"))
@@ -85,7 +69,7 @@ const Post = () => {
                       </div>
                   </form>
                 </div> 
-                {comments.map((comment) => (
+                {post.comments.map((comment) => (
                    <div key={comment.id} className="border-t border-gray-300 pt-4 mt-4">
                      <div className="flex items-center justify-between">
                        <Link href={`/user/${comment.userId}`} className="text-blue-500 hover:text-blue-700">
