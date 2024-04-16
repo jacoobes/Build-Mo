@@ -83,8 +83,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.get('/api/is-auth', async (req, res) => {
-    console.log(req.session)
-    res.json({ yes: req.session === undefined });
+    res.json({ yes: req.session !== undefined });
 });
 
 // Route to authenticate user

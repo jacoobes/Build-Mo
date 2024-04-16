@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle  } from '@/components/ui/card'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth.jsx'
 import { PlusIcon } from '@radix-ui/react-icons'
 
 const ForumPage = () => {
@@ -19,6 +19,7 @@ const ForumPage = () => {
         .catch(console.error)
     }, [])
     const handleSubmit = (post) => {
+       console.log(user)
        if(!user) {
            navigate("/login");    
        } else {
