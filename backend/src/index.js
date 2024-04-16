@@ -14,7 +14,11 @@ const upload = multer({ dest: "./uploads" })
 
 function isLoggedIn(req, res, next) {
     if (req.session) {
-        next()
+        if(!req.session.user) {
+            res.status(404).json({ success: false, message: "Not allowed." });
+        } else {
+            next()
+        }
     } else {
         res.redirect("/login")
     }
@@ -157,7 +161,7 @@ app.post('/add-item', async (req, res) => {
     }
 });
 
-app.delete('/delete-item/:itemId', async (req, res) => {
+app.delete('/delete-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
         const result = await deleteItem(userId, itemId);
@@ -168,11 +172,11 @@ app.delete('/delete-item/:itemId', async (req, res) => {
     }
 });
 
-app.put('/update-item/:itemId', async (req, res) => {
+app.put('/update-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
         const newItem = req.body;
-        const result = await updateItem(userId, itemId, newItem);
+        const result = await updateItem(req.session.user._id, itemId, newItem);
         res.json(result);
     } catch (err) {
         console.error('Error updating item:', err);

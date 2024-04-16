@@ -43,14 +43,16 @@ const DataGrid = () => {
         .then(json => setValue(json))
         .catch(() => setErr("Something went wrong"))
 
-//      fetch("mroute")
-//      .then(res =>res.json())
-//      .then(res => setBuilds(res))
-//      .catch(() => { 
-//      })
+      fetch("/api/builds", { credentials: "include" })
+      .then(res =>res.json())
+      .then(res => setBuilds(res))
+      .catch(() => { 
+          console.error("FIEN FIEN FIEN")
+      })
     }, [selectedCategory]);
-    const addItem = (build) => {
+    const addItem = (build, item) => {
         return (event) => {
+            console.log(build, item)
             //todo:
             // post a build to a route which will add an item to a user's build
         }
@@ -95,7 +97,7 @@ const DataGrid = () => {
                       </CommandList>
                     </Command>
                 </aside>
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
+                <hr className="h-px my-8  border-0 dark:bg-gray-700"/>
                 <div className="main-content flex flex-col flex-grow p-4">
                     <h1 className="font-bold text-2xl">{selectedCategory}</h1>
                     <div className="h-[63vh] relative overflow auto">
@@ -106,7 +108,6 @@ const DataGrid = () => {
                           <TableHead className="w-[100px] text-white font-bold">Name</TableHead>
                           <TableHead className="w-[100px] text-white">Price</TableHead>
                           <TableHead className="w-[100px] text-white font-bold">Add</TableHead>
-                          {/*<TableHead className="text-right">Add</TableHead>*/}
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -124,7 +125,7 @@ const DataGrid = () => {
                                             <DropdownMenuSeparator />
                                             {builds.length  
                                                 ? builds?.map(build => ( 
-                                                    <DropdownMenuItem onClick={addItem(build)}>
+                                                    <DropdownMenuItem onClick={addItem(build, s)}>
                                                         {build.name ?? "Unnamed"}
                                                     </DropdownMenuItem>
                                                 )) 
