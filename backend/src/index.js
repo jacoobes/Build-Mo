@@ -225,11 +225,24 @@ app.get('/api/categories', async (_, res) => {
 })
 
 //get single forum by id
-app.get("/api/posts/:id", async (Req, res) => {
-    res.status(200).json({
-        bofa: "deez"
-    });
+app.get("/api/posts/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
 
+    // Find the post by ID, populating the comments and user information
+    const post = await Post.findById(postId)
+      .populate("comments")
+      .populate("userId", "name email");
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Error getting post:", error);
+    res.status(500).json({ message: "Error getting post" });
+  }
 })
 //todo: Get all posts
 app.get("/api/posts", isLoggedIn, async (req, res) => {

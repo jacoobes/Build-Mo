@@ -17,15 +17,9 @@ import { useAuth } from '@/hooks/useAuth';
 const Post = () => {
   const { postId } = useParams();
   const nav = useNavigate();
-  const {  user } = useAuth()
+  const { user } = useAuth()
   const [comment, setComment] = useState("");
-  const [post, setPost] = useState({ 
-        userId: '642a9b9c8e6b9f0d2c8d6e7b',
-        title: 'Book Recommendation',
-        id: 2,
-        text: 'Just finished reading a fascinating book. Highly recommend it!',
-        pictures: ['https://picsum.photos/200/300']
-  });
+  const [post, setPost] = useState({});
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -49,9 +43,9 @@ const Post = () => {
       if(Number.isNaN(Number.parseInt(postId))) {
         nav("/")
       } else {
-     // fetch("http://localhost:5005/api/forums/"+forumId)
-     //     .then(setPost)
-     //     .catch(() => console.error("shit went bad"))
+        fetch("/api/posts/"+forumId)
+        .then(setPost)
+        .catch(() => console.error("shit went bad"))
       }
   },[]);
   return (
