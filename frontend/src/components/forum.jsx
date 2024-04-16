@@ -26,7 +26,7 @@ const ForumPage = () => {
        }
     }
     const onClickCard = (card) => {
-        navigate("/posts/"+card.id)
+        navigate("/posts/"+card._id)
     }
   return (
     <div className="container mx-auto py-8">
