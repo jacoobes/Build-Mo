@@ -7,10 +7,30 @@ import {addItem, connectDB, createNewBuild, deleteItem, getBuildsByUser, updateI
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import path from 'path'
+import { mkdir } from 'fs/promises'
 import {ls_json, read_json} from './dataset.js';
 import cookieParser from "cookie-parser";
 import multer from 'multer'
-const upload = multer({ dest: "./uploads" })
+const validmimetypes= [
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+]
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if(validmimetypes.includes(file.mimetype)) {
+        cb(null, path.resolve('uploads', req.session.user._id))
+    } else {
+        cb ({ message: "Invalid mime type: Accepts only " + validmimetypes })
+    }
+  },
+  filename: function (req, file, cd) {
+      cd(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+})
+
+const upload = multer({ storage })
 
 function isLoggedIn(req, res, next) {
     if (req.session) {
@@ -81,6 +101,7 @@ app.post('/api/register', async (req, res) => {
                 res.send(req.session.user)
             }
         })
+        await mkdir(path.resolve("uploads", savedUser._id.toString()))
     } catch (err) {
         console.error('Error creating user:', err);
         res.status(500).json({error: 'Failed to create user'});
@@ -88,7 +109,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.get('/api/is-auth', async (req, res) => {
-    res.json({ yes: req.session !== undefined });
+    res.json({ yes: req.session.user !== undefined });
 });
 
 // Route to authenticate user
@@ -282,12 +303,17 @@ app.get("/api/posts", isLoggedIn, async (req, res) => {
 app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res) => {
   try {
     const { title, text } = req.body;
-    const pictures = req.files.map((file) => path.join('/uploads', file.filename));
+    const usrid = req.session.user._id;
+    console.log("/api/posts", usrid)
+    const pictures = req
+          .files
+          .map(file => path.join('uploads', usrid, file.filename));
+      console.log(pictures)
     const post = new Post({
-      userId: req.session.user._id,
-      title,
-      text,
-      pictures,
+        userId: usrid,
+        title,
+        text,
+        pictures,
     });
 
     await post.save();

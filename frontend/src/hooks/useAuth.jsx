@@ -5,7 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(false);
     useEffect(() => {
-        fetch("/api/is-auth")
+        fetch("/api/is-auth", { credentials: 'include' })
         .then(res => res.json())
         .then(jon => setAuth(jon.yes))
     }, [])

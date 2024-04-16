@@ -28,6 +28,7 @@ const ForumForm = () => {
       const response = await fetch('/api/posts', {
         method: 'POST',
         body: formData,
+        credentials: 'include'
       });
 
       if (response.ok) {
