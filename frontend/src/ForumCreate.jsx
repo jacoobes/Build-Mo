@@ -48,7 +48,6 @@ const ForumForm = () => {
 
   const handlePictureUpload = (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
     setPictures(files);
   };
 

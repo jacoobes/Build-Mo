@@ -278,8 +278,14 @@ app.get("/api/posts/:id", async (req, res) => {
 
     // Find the post by ID, populating the comments and user information
     const post = await Post.findById(postId)
-      .populate("comments")
-      .populate("userId", "name email");
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'userId',
+                select: 'name email'
+            }
+        })
+        .populate("userId", "username");
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
@@ -294,9 +300,16 @@ app.get("/api/posts/:id", async (req, res) => {
 //todo: Get all posts
 app.get("/api/posts", isLoggedIn, async (req, res) => {
    const posts = await Post.find()
-      .populate("comments")
-      .populate("userId", "name email")
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+          select: 'name email'
+        }
+      })
+      .populate("userId", "username")
       .sort({ "comments.length": -1 });
+    console.log(posts)
     res.status(200).json(posts);
 })
 

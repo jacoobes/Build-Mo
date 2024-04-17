@@ -13,7 +13,6 @@ const ForumPage = () => {
         fetch("/api/posts")
         .then(res => res.json())
         .then((posts) => {
-            console.log(posts)
             setPosts(posts)
         })
         .catch(console.error)
@@ -35,7 +34,7 @@ const ForumPage = () => {
             (<Card className="hover:bg-border bg-card" onClick={() => onClickCard(post)}>
                 <CardHeader>
                   <CardTitle className="text-2xl">{post.title ?? "fix me"}</CardTitle>
-                  <p className="text-secondary text-sm mt-4 ">{post._id ?? "Leroy"}</p>
+                  <p className="text-secondary text-sm mt-4 ">{post.userId.username ?? "??"}</p>
                 </CardHeader>
                 <CardContent className="flex flex-row space-x-4">
                     {post.pictures.length && <img src={"/api/"+post.pictures[0]}/>}

@@ -29,6 +29,7 @@ const Post = () => {
         .then((post) => {
             return post.json()
         }).then(jsn => {
+            console.log(jsn)
             setPost(jsn) 
         })
         .catch(() => console.error("shit went bad"))
@@ -56,7 +57,7 @@ const Post = () => {
                     </Carousel>
                   </div>
                   <div className="mt-4 text-gray-500">
-                    <span>Posted by User {post.userId._id}</span>
+                    <span>Posted by {post.userId.username}</span>
                   </div>
                 </div>
                 <div className="shadow-md p-6">
