@@ -54,6 +54,7 @@ try {
 
 
 const app = express();
+app.use('/api/uploads',express.static('uploads'))
 app.use(cookieParser())
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -324,6 +325,6 @@ app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res
     res.status(500).json({ message: 'Error creating post' });
   }    res.status(200);
 })
-
+ 
 const PORT = process.env.PORT || 5005;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

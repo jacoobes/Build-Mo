@@ -48,7 +48,7 @@ const Post = () => {
                       <CarouselContent>
                         {post.pictures.map((picture, index) => 
                         (<CarouselItem>
-                            <img key={index} src={picture} alt={`Picture ${index}`} className="mb-4" />
+                            <img key={index} src={"/api/"+picture} alt={`Picture ${index}`} className="mb-4" />
                         </CarouselItem>))}
                       </CarouselContent>
                       <CarouselPrevious />

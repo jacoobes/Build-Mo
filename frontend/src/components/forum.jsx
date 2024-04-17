@@ -38,7 +38,7 @@ const ForumPage = () => {
                   <p className="text-secondary text-sm mt-4 ">{post._id ?? "Leroy"}</p>
                 </CardHeader>
                 <CardContent className="flex flex-row space-x-4">
-                    {post.pictures.length && <img src={"api/"+post.pictures[0]}/>}
+                    {post.pictures.length && <img src={"/api/"+post.pictures[0]}/>}
                     <div className="flex mb-4">
                         <span>{post.text}</span>
                     </div>

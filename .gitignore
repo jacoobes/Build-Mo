@@ -5,5 +5,5 @@ build
 dist
 package-lock.json
 json/*.json
-!public/uploads/.placeholder
-public/uploads/*/
+!uploads/.placeholder
+uploads/*/
