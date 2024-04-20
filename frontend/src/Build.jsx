@@ -37,11 +37,11 @@ const Build = () => {
           {err ? <p>{err.message}</p>
                : <div className="grid grid-cols-3 grid-rows-2 gap-4 h-screen">
                       <div className="col-span-1 row-span-1 flex justify-center items-center p-4">
-                         (<Button onClick={onClickGetBuilding}>
+                         <Button onClick={onClickGetBuilding}>
                             <span> 
                                 Start Building!
                             </span>
-                          </Button>)
+                          </Button>
                          {builds.map(build => 
                             (<div key={build._id} className="col-span-1 row-span-1 flex justify-center items-center p-4">
                                 <BuildTile buildId={build._id} title={build.title} />

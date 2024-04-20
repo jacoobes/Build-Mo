@@ -270,6 +270,54 @@ app.get('/api/categories', async (_, res) => {
     res.status(200)
         .json(json_file)
 })
+//todo: Get all posts
+app.get("/api/posts", isLoggedIn, async (req, res) => {
+   const posts = await Post.find()
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+          select: 'name email'
+        }
+      })
+      .populate("userId", "username")
+      .sort({ "comments.length": -1 }); console.log(posts)
+    res.status(200).json(posts);
+})
+
+app.put('/api/comments/:postId', isLoggedIn, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const { content } = req.body;
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Create a new comment
+    const newComment = new Comment({
+      userId: req.session.user._id.toString(),
+      content,
+      createdAt: new Date()
+    });
+
+    // Save the new comment
+    const savedComment = await newComment.save();
+
+    // Add the new comment to the post's comments array
+    post.comments.push(savedComment._id);
+
+    // Save the updated post
+    await post.save();
+
+    res.status(201).json({ savedComment });
+  } catch (error) {
+    console.error('Error creating comment:', error);
+    res.status(500).json({ message: 'Error creating comment' });
+  }
+});
 
 //get single forum by id
 app.get("/api/posts/:id", async (req, res) => {
@@ -297,21 +345,8 @@ app.get("/api/posts/:id", async (req, res) => {
     res.status(500).json({ message: "Error getting post" });
   }
 })
-//todo: Get all posts
-app.get("/api/posts", isLoggedIn, async (req, res) => {
-   const posts = await Post.find()
-      .populate({
-        path: 'comments',
-        populate: {
-          path: 'userId',
-          select: 'name email'
-        }
-      })
-      .populate("userId", "username")
-      .sort({ "comments.length": -1 });
-    console.log(posts)
-    res.status(200).json(posts);
-})
+
+
 
 //todo: Create new forum
 app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res) => {

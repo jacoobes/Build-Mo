@@ -16,16 +16,29 @@ import { useAuth } from '@/hooks/useAuth';
 
 const Post = () => {
   const { postId } = useParams();
-  const nav = useNavigate();
-  const { user } = useAuth()
   const [comment, setComment] = useState("");
   const [post, setPost] = useState(null);
-    const submitComment = (e) => {
-    e.preventDefault();
-    setComment("");
+    const submitComment = async (e) => {
+        e.preventDefault();
+        fetch("/api/comments/"+postId, {  
+            method: 'PUT',
+            credentials: 'include',
+            body: JSON.stringify({
+                content: comment
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(cmt => {
+            console.log(cmt)
+            setPost({ comments: [cmt, ...post.comments], ...post });
+        })
+        .catch(console.error)
   }
   useEffect(() => {
-        fetch("/api/posts/"+postId)
+        fetch("/api/posts/"+postId, { credentials: 'include' })
         .then((post) => {
             return post.json()
         }).then(jsn => {
@@ -70,17 +83,16 @@ const Post = () => {
                       </div>
                   </form>
                 </div> 
-                {post.comments.map((comment) => (
-                   <div key={comment.id} className="border-t border-gray-300 pt-4 mt-4">
-                     <div className="flex items-center justify-between">
-                       <Link href={`/user/${comment.userId}`} className="text-blue-500 hover:text-blue-700">
-                         User {comment.userId}
-                       </Link>
-                       <span className="text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
-                     </div>
-                     <p className="mt-2">{comment.content}</p>
-                   </div>
-                ))}      
+                {post.comments.map(comment => 
+                    (<div key={comment.id} className="border-t border-gray-300 pt-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <Link href={`/user/${comment.userId}`} className="text-blue-500 hover:text-blue-700">
+                                User {comment.userId}
+                            </Link>
+                            <span className="text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
+                        </div>
+                        <p className="mt-2">{comment.content}</p>
+                    </div>))}      
       </div>)
       : <p>Loading...</p>}
     </div>
