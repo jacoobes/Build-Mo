@@ -86,8 +86,8 @@ const Post = () => {
                 {post.comments.map(comment => 
                     (<div key={comment.id} className="border-t border-gray-300 pt-4 mt-4">
                         <div className="flex items-center justify-between">
-                            <Link href={`/user/${comment.userId}`} className="text-blue-500 hover:text-blue-700">
-                                User {comment.userId}
+                            <Link href={`/user/${comment.userId.username}`} className="text-blue-500 hover:text-blue-700">
+                                {comment.userId.username}
                             </Link>
                             <span className="text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
                         </div>

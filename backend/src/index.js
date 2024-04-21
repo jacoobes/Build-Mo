@@ -330,7 +330,7 @@ app.get("/api/posts/:id", async (req, res) => {
             path: 'comments',
             populate: {
                 path: 'userId',
-                select: 'name email'
+                select: 'username'
             }
         })
         .populate("userId", "username");
