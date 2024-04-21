@@ -1,7 +1,8 @@
 import React from 'react';
 import BuildTile from './BuildTile'; 
 import {  Button } from '@/components/ui/button'
-
+import { Card, CardContent } from '@/components/ui/card' 
+import { PlusIcon } from '@radix-ui/react-icons'
 const Build = () => {
     const [builds, setBuilds] = React.useState([]);
     const [added, setAdded] = React.useState(false);
@@ -32,24 +33,18 @@ const Build = () => {
         .catch(err => setErr(err))
     }
 
-    return (
-      <div className="container max-w-6xl mx-auto px-4 py-8">
-          {err ? <p>{err.message}</p>
-               : <div className="grid grid-cols-3 grid-rows-2 gap-4 h-screen">
-                      <div className="col-span-1 row-span-1 flex justify-center items-center p-4">
-                         <Button onClick={onClickGetBuilding}>
-                            <span> 
-                                Start Building!
-                            </span>
-                          </Button>
-                         {builds.map(build => 
-                            (<div key={build._id} className="col-span-1 row-span-1 flex justify-center items-center p-4">
-                                <BuildTile buildId={build._id} title={build.title} />
-                            </div>))}
-                       </div>
-                 </div>}
-        </div>
-    );
+    return (err 
+        ? <p>{err.message}</p>
+        : <div className="grid grid-cols-3 grid-rows-2 gap-4 h-screen">
+             <Card>
+                <CardContent >
+                    <Button className="w-full h-full justify-center ">
+                        <PlusIcon/>
+                    </Button>
+                </CardContent>
+              </Card>
+             {builds.map(build => <BuildTile build={build}/>)}
+          </div>);
   };
   
 
