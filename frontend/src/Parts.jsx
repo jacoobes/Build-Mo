@@ -46,15 +46,26 @@ const DataGrid = () => {
       fetch("/api/builds", { credentials: "include" })
       .then(res =>res.json())
       .then(res => setBuilds(res))
-      .catch(() => { 
+      .catch((e) => { 
+          console.error(e)
           console.error("FIEN FIEN FIEN")
       })
     }, [selectedCategory]);
     const addItem = (build, item) => {
         return (event) => {
+            console.log(selectedCategory)
             console.log(build, item)
-            //todo:
-            // post a build to a route which will add an item to a user's build
+            fetch("/api/add-item", { 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify({ 
+                    itemData: { type: selectedCategory, ...item },
+                }) 
+            }).then(res => res.json())
+              .catch(console.error)
         }
     }
     return (
@@ -72,10 +83,10 @@ const DataGrid = () => {
                                     <span>Case Accesories</span>
                                 </CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="case">Case</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="cpu-coolers">Cpu Coolers</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="cpu-cooler">Cpu Coolers</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="cpu">Cpu</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="external-hdd">External HDD</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="fan-controllers">Fan Controllers</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="fan-controller">Fan Controllers</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="headphones">Headphones</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="internal-hdd">Internal HDD</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="keyboard">Keyboard</CommandItem>
@@ -93,6 +104,7 @@ const DataGrid = () => {
                                 <CommandItem onSelect={setSelectedCategory} value="video-card">Video Card</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="webcam">Webcam</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="wired-network-card">Wired Network Card</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="wireless-network-card">Wired Network Card</CommandItem>
                         </CommandGroup>
                       </CommandList>
                     </Command>

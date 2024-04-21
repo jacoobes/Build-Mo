@@ -26,6 +26,9 @@ const builditem = new mongoose.Schema({
     },
     price: {
         type: Number
+    },
+    extra: {
+        type: String
     }
 });
 const Comment = mongoose.model('BuildItem', builditem);

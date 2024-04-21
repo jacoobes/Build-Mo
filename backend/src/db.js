@@ -34,20 +34,17 @@ async function createNewBuild(userId, buildName) {
 
 async function addItem(userId, itemData) {
     try {
-        const ongoingBuild = await Pcbuild.findOne({ userId: userId, isCompleted: false });
-            if (ongoingBuild){
-                ongoingBuild.items.push(itemData);
-                await ongoingBuild.save();
-                return { success: true, message: 'Item added to ongoing build successfully' };
-            } else {
-
-            }
-
-    await newBuild.save();
-
-    await User.findByIdAndUpdate(userId, { $push: { builds: newBuild._id } });
-
-    return { success: true, message: 'Item added successfully' };
+        const ongoingBuild = await Pcbuild.findOne({ userId: userId });
+        console.log(itemData)
+        const { type, price, name="unnamed", ...rest } = itemData;
+        ongoingBuild.items.push({ 
+            type,
+            price,
+            name: name ?? "unnamed",
+            extra: JSON.stringify(rest)
+        });
+        await ongoingBuild.save();
+        return { success: true, message: 'Item added to ongoing build successfully' };
     } catch (err){
         console.error('Error adding item:', err);
         return { success: false, error: 'Failed to add item' };

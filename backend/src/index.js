@@ -172,10 +172,10 @@ app.post('/api/create-new-build', isLoggedIn, async (req, res) => {
     }
 });
 
-app.post('/add-item', async (req, res) => {
+app.post('/api/add-item', isLoggedIn, async (req, res) => {
     try {
-        const {userId, itemData} = req.body;
-        const result = await addItem(userId, itemData);
+        const {itemData} = req.body;
+        const result = await addItem(req.session.user._id, itemData);
         res.json(result);
     } catch (err) {
         console.error('Error adding item:', err);
@@ -183,10 +183,11 @@ app.post('/add-item', async (req, res) => {
     }
 });
 
-app.delete('/delete-item/:itemId', isLoggedIn, async (req, res) => {
+app.delete('/api/delete-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
-        const result = await deleteItem(userId, itemId);
+        console.log(req.session.user._id)
+        const result = await deleteItem(req.session.user._id, itemId);
         res.json(result);
     } catch (err) {
         console.error('Error deleting item:', err);
@@ -194,7 +195,7 @@ app.delete('/delete-item/:itemId', isLoggedIn, async (req, res) => {
     }
 });
 
-app.put('/update-item/:itemId', isLoggedIn, async (req, res) => {
+app.put('/api/update-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
         const newItem = req.body;
@@ -205,6 +206,7 @@ app.put('/update-item/:itemId', isLoggedIn, async (req, res) => {
         res.status(500).json({error: 'Failed to update'});
     }
 });
+
 // Get a single build by ID
 app.get('/api/builds/:id', isLoggedIn, async (req, res) => {
   try {
@@ -228,7 +230,6 @@ app.get('/api/builds/:id', isLoggedIn, async (req, res) => {
 
 app.get('/api/builds', isLoggedIn, async (req, res) => {
     try {
-        
         const builds = await getBuildsByUser(req.session.user._id);
         res.json(builds);
     } catch (err) {
