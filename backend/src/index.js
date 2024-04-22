@@ -208,7 +208,7 @@ app.put('/api/update-item/:itemId', isLoggedIn, async (req, res) => {
 });
 
 // Get a single build by ID
-app.get('/api/builds/:id', isLoggedIn, async (req, res) => {
+app.get('/api/builds/:id', async (req, res) => {
   try {
     const buildId = req.params.id;
 
@@ -372,7 +372,8 @@ app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res
   } catch (error) {
     console.error('Error creating post:', error);
     res.status(500).json({ message: 'Error creating post' });
-  }    res.status(200);
+  }    
+  res.status(200);
 })
  
 const PORT = process.env.PORT || 5005;

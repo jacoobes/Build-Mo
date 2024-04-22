@@ -44,9 +44,7 @@ const App = () => {
                 </ProtectedRoute>
             } />
             <Route path="/build/:buildId" element={
-                <ProtectedRoute>
-                    <BuildDetail />
-                </ProtectedRoute>
+                <BuildDetail/>
             } />
           </Routes>
       </AuthProvider>

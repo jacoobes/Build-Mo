@@ -28,6 +28,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+import { Link } from 'react-router-dom';
 
 const DataGrid = () => {
     const [values, setValue] = React.useState([])
@@ -36,7 +37,6 @@ const DataGrid = () => {
     const [categories, setCategories] = React.useState("cpu");
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
-        console.log(selectedCategory)
         //http://localhost:5005/api/json/cpu
         fetch("/api/json/"+selectedCategory)
         .then(res => res.json())
@@ -53,8 +53,6 @@ const DataGrid = () => {
     }, [selectedCategory]);
     const addItem = (build, item) => {
         return (event) => {
-            console.log(selectedCategory)
-            console.log(build, item)
             fetch("/api/add-item", { 
                 headers: {
                     'Content-Type': 'application/json'
@@ -64,8 +62,9 @@ const DataGrid = () => {
                 body: JSON.stringify({ 
                     itemData: { category: selectedCategory, ...item },
                 }) 
-            }).then(res => res.json())
-              .catch(console.error)
+            })
+            .then(res => res.json())
+            .catch(console.error)
         }
     }
     return (
@@ -142,7 +141,7 @@ const DataGrid = () => {
                                                     </DropdownMenuItem>
                                                 )) 
                                                 : <DropdownMenuItem >
-                                                    Get Building!
+                                                    <Link to="/build">Get Building!</Link>
                                                   </DropdownMenuItem>}
                                           </DropdownMenuContent>
                                        </DropdownMenu> 
