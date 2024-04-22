@@ -31,7 +31,7 @@ const ForumPage = () => {
     <div className="container mx-auto py-8">
       <Button onClick={handleSubmit}><PlusIcon/></Button>
       {posts.map(post => 
-            (<Card className="hover:bg-border bg-card" onClick={() => onClickCard(post)}>
+            (<Card key={post._id} className="hover:bg-border bg-card" onClick={() => onClickCard(post)}>
                 <CardHeader>
                   <CardTitle className="text-2xl">{post.title ?? "fix me"}</CardTitle>
                   <p className="text-secondary text-sm mt-4 ">{post.userId.username ?? "??"}</p>
