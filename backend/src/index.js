@@ -228,6 +228,29 @@ app.get('/api/builds/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/builds/:id', isLoggedIn, async (req, res) => {
+  try {
+    const buildId = req.params.id;
+    const userId = req.session.user._id;
+
+    // Find the build by id and user id
+    const build = await Pcbuild.findOneAndDelete({ _id: buildId, userId });
+
+    // If build doesn't exist or doesn't belong to the user, return an error
+    if (!build) {
+      return res.status(404).json({ message: 'Build not found' });
+    }
+
+    // Delete the build
+    await build.deleteOne();
+
+    res.json({ success: true, message: 'Build deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting build:', error);
+    res.status(500).json({ success: false, message: 'Error deleting build' });
+  }
+});
+
 app.get('/api/builds', isLoggedIn, async (req, res) => {
     try {
         const builds = await getBuildsByUser(req.session.user._id);

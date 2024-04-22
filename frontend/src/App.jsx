@@ -12,6 +12,7 @@ import BuildPage from './Build.jsx';
 import ForumCreate from './ForumCreate.jsx';
 import BuildDetail from './BuildDetail';
 import Navbar from './Navbar'; 
+import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider} from './components/ThemeProvider.jsx';
 
 const ProtectedRoute = ({ children }) => {
@@ -28,6 +29,7 @@ const App = () => {
     <Router>
       <ThemeProvider>
       <AuthProvider>
+      <Toaster/>
       <Navbar />
           <Routes> {/* Wrap Route components in Routes */}
             <Route path="/" element={<AuthenticationPage/>}/>
