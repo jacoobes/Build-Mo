@@ -48,12 +48,22 @@ const BuildDetail = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
+            {build.items.map(item => 
+                (<TableRow>
+                    <TableCell className="font-medium">{item.category}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell className="text-right">{item.price ?? "??"}</TableCell>
+                </TableRow>))}
           </TableBody>
+          <TableRow>
+            <TableCell className="font-bold"> 
+            Total 
+            </TableCell> 
+            <TableCell/> 
+            <TableCell className="text-right font-bold">
+                {build.items.reduce((acc, col) => col.price + acc, 0)}
+            </TableCell>
+          </TableRow>
         </Table>
       </div>);
 };

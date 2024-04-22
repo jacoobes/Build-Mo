@@ -62,7 +62,7 @@ const DataGrid = () => {
                 credentials: 'include',
                 method: 'POST',
                 body: JSON.stringify({ 
-                    itemData: { type: selectedCategory, ...item },
+                    itemData: { category: selectedCategory, ...item },
                 }) 
             }).then(res => res.json())
               .catch(console.error)

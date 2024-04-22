@@ -38,7 +38,7 @@ const Build = () => {
         : <div className="grid grid-cols-3 grid-rows-2 gap-4 h-screen">
              <Card>
                 <CardContent >
-                    <Button className="w-full h-full justify-center ">
+                    <Button className="w-full h-full justify-center" onClick={onClickGetBuilding}>
                         <PlusIcon/>
                     </Button>
                 </CardContent>

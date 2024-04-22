@@ -213,7 +213,7 @@ app.get('/api/builds/:id', isLoggedIn, async (req, res) => {
     const buildId = req.params.id;
 
     // Find the build by ID and check if the user is the owner
-    const build = await Pcbuild.findById(buildId)
+    const build = await Pcbuild.findById(buildId).populate('items')
       //.populate('user', 'name email')
       //.populate('parts');
 
