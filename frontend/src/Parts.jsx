@@ -146,7 +146,7 @@ const DataGrid = () => {
                                           </DropdownMenuContent>
                                        </DropdownMenu> 
                                 </TableCell>
-                            </TableRow> )}
+                            </TableRow>)}
                       </TableBody>
                     </Table>
                     </div>

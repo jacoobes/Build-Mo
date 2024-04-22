@@ -272,7 +272,7 @@ app.get('/api/categories', async (_, res) => {
         .json(json_file)
 })
 //todo: Get all posts
-app.get("/api/posts", isLoggedIn, async (req, res) => {
+app.get("/api/posts", async (req, res) => {
    const posts = await Post.find()
       .populate({
         path: 'comments',
