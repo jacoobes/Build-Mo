@@ -42,7 +42,7 @@ async function addItem(userId, itemData) {
         const maybeItem = await BuildItem.findOne({ name });
         let curItem;
         if(maybeItem) {
-            curItem = maybeItem._id.toString() 
+            curItem = maybeItem 
         } else {
             const item = await BuildItem.create({ 
                 category,
