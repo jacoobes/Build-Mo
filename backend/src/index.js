@@ -35,7 +35,7 @@ const upload = multer({ storage })
 function isLoggedIn(req, res, next) {
     if (req.session) {
         if(!req.session.user) {
-            res.status(404).json({ success: false, message: "Not allowed." });
+            res.status(404).json({ success: false, error: "Not allowed." });
         } else {
             next()
         }

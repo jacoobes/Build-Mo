@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator }  from '@/components/ui/dropdown-menu'
 import { PlusIcon } from '@radix-ui/react-icons'
+import { useAuth } from './hooks/useAuth';
 const BuildDetail = () => {
   const { buildId } = useParams();
+  const { user } = useAuth()
   const [build, setBuild] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,8 +35,6 @@ const BuildDetail = () => {
   }, [isLoading]);
   const execute = (action, item) => {
     return (event) => {
-
-        console.log(build)
         switch(action) {
             case "delete": {
                 fetch("/api/delete-item/"+item._id.toString(), {
@@ -50,10 +50,10 @@ const BuildDetail = () => {
                     if(json.success) {
                         setIsLoading(!isLoading)
                     } else {
-                        console.error(json.error)
+                        console.error(json)
                     }
                 })
-                .catch(console.error ) 
+                .catch(e => console.error(e)) 
             }
         }
     }
@@ -72,7 +72,7 @@ const BuildDetail = () => {
             <TableRow>
               <TableHead className="w-[100px]">Type</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Action </TableHead>
+              {user && <TableHead>Action </TableHead>}
               <TableHead className="text-right">Amount</TableHead>
             </TableRow>
           </TableHeader>
@@ -81,7 +81,7 @@ const BuildDetail = () => {
                 (<TableRow>
                     <TableCell className="font-medium">{item.category}</TableCell>
                     <TableCell>{item.name}</TableCell>
-                    <TableCell>                                       
+                    {user && <TableCell>                                       
                         <DropdownMenu>
                           <DropdownMenuTrigger>
                             <PlusIcon/>
@@ -96,7 +96,7 @@ const BuildDetail = () => {
                             ))}
                           </DropdownMenuContent>
                         </DropdownMenu> 
-                    </TableCell>
+                    </TableCell>}
                     <TableCell className="text-right">{item.price ?? "??"}</TableCell>
                 </TableRow>))}
           </TableBody>
@@ -105,7 +105,7 @@ const BuildDetail = () => {
             Total 
             </TableCell> 
             <TableCell/> 
-            <TableCell/> 
+            {user && <TableCell/>}
             <TableCell className="text-right font-bold">
                 {build.items.reduce((acc, col) => col.price + acc, 0)}
             </TableCell>
