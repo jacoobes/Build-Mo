@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-
+import { useAuth } from '@/hooks/useAuth'
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
@@ -19,6 +20,7 @@ const Register = () => {
 
       const data = await response.json();
       console.log(data);
+      login(data)
     } catch (error) {
       setError('Failed to create user');
     }
