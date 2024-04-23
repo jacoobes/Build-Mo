@@ -15,7 +15,7 @@ const Build = () => {
     }, [added]);
 
     const onClickGetBuilding = ev => {
-        const buildName = prompt("Enter the name for your new build:");
+        const buildName = prompt("Name for your new build:");
         if (!buildName){
             console.log('Build Creation Cancelled');
             return;

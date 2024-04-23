@@ -40,9 +40,9 @@ async function addItem(userId, itemData) {
         //(def jsonpaths (map str (fs/glob "./json" "**.json")))
         //(map (comp (fn [sn] (every? #(get % "name") sn) ) json/parse-string slurp) jsonpaths)
         const maybeItem = await BuildItem.findOne({ name });
-        let idAdded;
+        let curItem;
         if(maybeItem) {
-            idAdded = maybeItem._id.toString() 
+            curItem = maybeItem._id.toString() 
         } else {
             const item = await BuildItem.create({ 
                 category,
@@ -50,11 +50,26 @@ async function addItem(userId, itemData) {
                 name,
                 extra: JSON.stringify(rest)
             });
-            idAdded = item._id.toString()
+            curItem = item
         }
-        //do compatability check here here
-        console.log(ongoingBuild.items)
-        ongoingBuild.items.push(idAdded);
+        const hasCpu = ongoingBuild.items.find(item => item.category === "cpu");
+        if(curItem.category == "cpu" && hasCpu) {
+            return { success: false, error: "Your build has a cpu already" }
+        }
+
+        const hasMotherBoard = ongoingBuild.items.find(item => item.category === "motherboard")
+        if(curItem.category == "motherboard" && hasMotherBoard) {
+            return { success: false, error: "Your build has a motherboard already" }
+        }
+        const hasSupply = ongoingBuild.items.find(item => item.category === "power-supply")
+        if(curItem.category == "power-supply" && hasSupply) {
+            return { success: false, error: "Your build has a power-supply already" }
+        }
+        const hasCase = ongoingBuild.items.find(item => item.category == "case")
+        if(curItem.category == "case" && hasCase) {
+            return { success: false, error: "Your build has a computer case already" }
+        }
+        ongoingBuild.items.push(curItem._id.toString());
         await ongoingBuild.save();
         return { success: true, message: 'Item added to ongoing build successfully' };
     } catch (err){
@@ -63,12 +78,18 @@ async function addItem(userId, itemData) {
     }
 }
 
-async function deleteItem(userId, buildId) {
+async function deleteItem(userId, buildId, itemId) {
     try {
-    await Pcbuild.findByIdAndDelete(buildId);
+     const build = await Pcbuild.findOne({ userId, _id: buildId });    
+     // Check if the build exists
+     if (!build) {
+        return { success: false, error: 'Build not found' };
+     }
 
-    await User.findByIdAndUpdate(userId, { $pull: { builds: buildId } });
-
+     // Remove the item from the items array
+     build.items = build.items.filter(itemObjectId => itemObjectId.toString() !== itemId);
+     // Save the updated build
+     await build.save();
     return { success: true, message: 'Item deleted successfully' };
     } catch (err){
         console.error('Error deleting item:', err);

@@ -29,6 +29,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { Link } from 'react-router-dom';
+import { useToast } from './components/ui/use-toast';
 
 const DataGrid = () => {
     const [values, setValue] = React.useState([])
@@ -36,6 +37,7 @@ const DataGrid = () => {
     const [selectedCategory, setSelectedCategory] = React.useState("cpu");
     const [categories, setCategories] = React.useState("cpu");
     const [err, setErr] = React.useState(null)
+    const { toast } = useToast()
     React.useEffect(() => {
         //http://localhost:5005/api/json/cpu
         fetch("/api/json/"+selectedCategory)
@@ -64,6 +66,19 @@ const DataGrid = () => {
                 }) 
             })
             .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if(res.success) {
+                    toast({ 
+                        title: res.message
+                    })
+                } else {
+                    toast({ 
+                        title: res.error ?? "Failed to add item"
+                    })
+                }
+                
+            })
             .catch(console.error)
         }
     }
@@ -78,9 +93,7 @@ const DataGrid = () => {
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
-                                <CommandItem onSelect={setSelectedCategory}>
-                                    <span>Case Accesories</span>
-                                </CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="case-accessory">Case Accessories</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="case">Case</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="cpu-cooler">Cpu Coolers</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="cpu">Cpu</CommandItem>
@@ -91,7 +104,7 @@ const DataGrid = () => {
                                 <CommandItem onSelect={setSelectedCategory} value="keyboard">Keyboard</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="memory">Memory</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="monitors">Monitors</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="motherboards">Motherboards</CommandItem>
+                                <CommandItem onSelect={setSelectedCategory} value="motherboard">Motherboards</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="mouse">Mouse</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="optical-drive">Optical Drive</CommandItem>
                                 <CommandItem onSelect={setSelectedCategory} value="os">OS</CommandItem>

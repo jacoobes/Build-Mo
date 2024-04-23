@@ -186,8 +186,8 @@ app.post('/api/add-item', isLoggedIn, async (req, res) => {
 app.delete('/api/delete-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
-        console.log(req.session.user._id)
-        const result = await deleteItem(req.session.user._id, itemId);
+        const { buildId } = req.body
+        const result = await deleteItem(req.session.user._id, buildId, itemId);
         res.json(result);
     } catch (err) {
         console.error('Error deleting item:', err);
