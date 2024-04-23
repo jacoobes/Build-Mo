@@ -39,7 +39,7 @@ export default function MainPage() {
       <section className="flex flex-col items-center justify-center flex-grow bg-background text-foreground mt-48 md:mt-80 mb-32 md:mb-24 lg:mb-48" style={{fontFamily: 'Poppins, sans-serif'}}>
         <h1 className="text-4xl font-bold mb-4">Empower Your Setup</h1>
         <p className="text-lg mb-8">PC building made simple</p>
-        <Link to="/build" className="bg-primary hover:bg-primary-hover text-foreground font-bold py-2 px-4 rounded mb-64">
+        <Link to="/build" className="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded mb-64">
           Get Started
         </Link>
 
