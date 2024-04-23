@@ -30,7 +30,6 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Response data:', data); // Log the response status
-        console.log(data); // handle success, maybe redirect
         await login({ username, id: data.id });
         navigate('/build');
       } else {
