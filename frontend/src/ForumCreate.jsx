@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
-
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 const ForumForm = () => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -28,6 +28,7 @@ const ForumForm = () => {
       const response = await fetch('/api/posts', {
         method: 'POST',
         body: formData,
+        credentials: 'include'
       });
 
       if (response.ok) {
@@ -47,7 +48,6 @@ const ForumForm = () => {
 
   const handlePictureUpload = (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
     setPictures(files);
   };
 
@@ -73,13 +73,12 @@ const ForumForm = () => {
                 <Label htmlFor="text" className="block font-bold mb-2 text-xl">
                   Text
                 </Label>
-                <textarea
-                  id="text"
+                <Textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   required
                   className="w-full h-32 border rounded-md p-2 focus:outline-none focus:ring-2"
-                ></textarea>
+                ></Textarea>
               </div>
               <div className="mb-4">
                 <Label htmlFor="pictures" className="block font-bold mb-2">

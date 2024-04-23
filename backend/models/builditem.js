@@ -22,10 +22,14 @@ const builditem = new mongoose.Schema({
     },
     name: {
         required: true,
-        type: String
+        type: String,
+        unique: true
     },
     price: {
         type: Number
+    },
+    extra: {
+        type: String
     }
 });
 const Comment = mongoose.model('BuildItem', builditem);

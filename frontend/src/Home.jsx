@@ -156,7 +156,7 @@ export default function MainPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="mr-48">
             {/* add image */}
-            <img class="h-auto max-w-full rounded-none" src={PC_DECON} alt="Computer Deconstructed"/>
+            <img className="h-auto max-w-full rounded-none" src={PC_DECON} alt="Computer Deconstructed"/>
           </div>
 
           <div>

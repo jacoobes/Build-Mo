@@ -1,5 +1,6 @@
 
 import mongoose from 'mongoose';
+const { Schema } = mongoose;
 /* an example
     const newComment = new Comment({
       userId: '642a9b9c8e6b9f0d2c8d6e7c',
@@ -22,9 +23,10 @@ import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema({
   userId: {
-    type: String,
-    required: true,
-  },
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+   },
   content: {
     type: String,
     required: true,

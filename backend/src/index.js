@@ -1,19 +1,44 @@
 import express from 'express';
 import User from '../models/user.js';
 import Post from '../models/post.js'
+import Pcbuild from '../models/pcbuild.js'
 import Comment from '../models/comment.js'
 import {addItem, connectDB, createNewBuild, deleteItem, getBuildsByUser, updateItem, url} from './db.js';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import path from 'path'
+import { mkdir } from 'fs/promises'
 import {ls_json, read_json} from './dataset.js';
 import cookieParser from "cookie-parser";
 import multer from 'multer'
-const upload = multer({ dest: "./uploads" })
+const validmimetypes= [
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+]
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if(validmimetypes.includes(file.mimetype)) {
+        cb(null, path.resolve('uploads', req.session.user._id))
+    } else {
+        cb ({ message: "Invalid mime type: Accepts only " + validmimetypes })
+    }
+  },
+  filename: function (req, file, cd) {
+      cd(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+})
+
+const upload = multer({ storage })
 
 function isLoggedIn(req, res, next) {
     if (req.session) {
-        next()
+        if(!req.session.user) {
+            res.status(404).json({ success: false, message: "Not allowed." });
+        } else {
+            next()
+        }
     } else {
         res.redirect("/login")
     }
@@ -29,6 +54,7 @@ try {
 
 
 const app = express();
+app.use('/api/uploads',express.static('uploads'))
 app.use(cookieParser())
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -76,6 +102,7 @@ app.post('/api/register', async (req, res) => {
                 res.send(req.session.user)
             }
         })
+        await mkdir(path.resolve("uploads", savedUser._id.toString()))
     } catch (err) {
         console.error('Error creating user:', err);
         res.status(500).json({error: 'Failed to create user'});
@@ -83,7 +110,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.get('/api/is-auth', async (req, res) => {
-    res.json({ yes: req.session });
+    res.json({ yes: req.session.user !== undefined });
 });
 
 // Route to authenticate user
@@ -120,6 +147,7 @@ app.post('/api/logout', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                console.log("destroyed")
                 res.json({message: 'Session is destroyed'})
             }
         });
@@ -129,10 +157,10 @@ app.post('/api/logout', (req, res) => {
     }
 });
 
-app.post('/create-new-build', async (req, res) => {
+app.post('/api/create-new-build', isLoggedIn, async (req, res) => {
     try {
-        const {userId, buildName} = req.body;
-        const result = await createNewBuild(userId, buildName);
+        const {buildName} = req.body;
+        const result = await createNewBuild(req.session.user._id, buildName);
         if (result.success) {
             res.json({...result});
         } else {
@@ -144,10 +172,10 @@ app.post('/create-new-build', async (req, res) => {
     }
 });
 
-app.post('/add-item', async (req, res) => {
+app.post('/api/add-item', isLoggedIn, async (req, res) => {
     try {
-        const {userId, itemData} = req.body;
-        const result = await addItem(userId, itemData);
+        const {itemData} = req.body;
+        const result = await addItem(req.session.user._id, itemData);
         res.json(result);
     } catch (err) {
         console.error('Error adding item:', err);
@@ -155,10 +183,11 @@ app.post('/add-item', async (req, res) => {
     }
 });
 
-app.delete('/delete-item/:itemId', async (req, res) => {
+app.delete('/api/delete-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
-        const result = await deleteItem(userId, itemId);
+        console.log(req.session.user._id)
+        const result = await deleteItem(req.session.user._id, itemId);
         res.json(result);
     } catch (err) {
         console.error('Error deleting item:', err);
@@ -166,11 +195,11 @@ app.delete('/delete-item/:itemId', async (req, res) => {
     }
 });
 
-app.put('/update-item/:itemId', async (req, res) => {
+app.put('/api/update-item/:itemId', isLoggedIn, async (req, res) => {
     try {
         const itemId = req.params.itemId;
         const newItem = req.body;
-        const result = await updateItem(userId, itemId, newItem);
+        const result = await updateItem(req.session.user._id, itemId, newItem);
         res.json(result);
     } catch (err) {
         console.error('Error updating item:', err);
@@ -178,10 +207,53 @@ app.put('/update-item/:itemId', async (req, res) => {
     }
 });
 
+// Get a single build by ID
+app.get('/api/builds/:id', async (req, res) => {
+  try {
+    const buildId = req.params.id;
+
+    // Find the build by ID and check if the user is the owner
+    const build = await Pcbuild.findById(buildId).populate('items')
+      //.populate('user', 'name email')
+      //.populate('parts');
+
+    if (!build) {
+      return res.status(404).json({ message: 'Build not found' });
+    }
+
+    res.status(200).json(build);
+  } catch (error) {
+    console.error('Error getting build:', error);
+    res.status(500).json({ message: 'Error getting build' });
+  }
+});
+
+app.delete('/api/builds/:id', isLoggedIn, async (req, res) => {
+  try {
+    const buildId = req.params.id;
+    const userId = req.session.user._id;
+
+    // Find the build by id and user id
+    const build = await Pcbuild.findOneAndDelete({ _id: buildId, userId });
+
+    // If build doesn't exist or doesn't belong to the user, return an error
+    if (!build) {
+      return res.status(404).json({ message: 'Build not found' });
+    }
+
+    // Delete the build
+    await build.deleteOne();
+
+    res.json({ success: true, message: 'Build deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting build:', error);
+    res.status(500).json({ success: false, message: 'Error deleting build' });
+  }
+});
+
 app.get('/api/builds', isLoggedIn, async (req, res) => {
     try {
-
-        const builds = await getBuildsByUser(req.session._id);
+        const builds = await getBuildsByUser(req.session.user._id);
         res.json(builds);
     } catch (err) {
         console.error('Error fetching the builds:', err);
@@ -222,33 +294,99 @@ app.get('/api/categories', async (_, res) => {
     res.status(200)
         .json(json_file)
 })
-
-//get single forum by id
-app.get("/api/posts/:id", async (Req, res) => {
-    res.status(200).json({
-        bofa: "deez"
-    });
-
-})
 //todo: Get all posts
-app.get("/api/posts", isLoggedIn, async (req, res) => {
+app.get("/api/posts", async (req, res) => {
    const posts = await Post.find()
-      .populate("comments")
-      .populate("userId", "name email")
-      .sort({ "comments.length": -1 });
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+          select: 'name email'
+        }
+      })
+      .populate("userId", "username")
+      .sort({ "comments.length": -1 }); console.log(posts)
     res.status(200).json(posts);
 })
+
+app.put('/api/comments/:postId', isLoggedIn, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const { content } = req.body;
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Create a new comment
+    const newComment = new Comment({
+      userId: req.session.user._id.toString(),
+      content,
+      createdAt: new Date()
+    });
+
+    // Save the new comment
+    const savedComment = await newComment.save();
+
+    // Add the new comment to the post's comments array
+    post.comments.push(savedComment._id);
+
+    // Save the updated post
+    await post.save();
+
+    res.status(201).json({ savedComment });
+  } catch (error) {
+    console.error('Error creating comment:', error);
+    res.status(500).json({ message: 'Error creating comment' });
+  }
+});
+
+//get single forum by id
+app.get("/api/posts/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    // Find the post by ID, populating the comments and user information
+    const post = await Post.findById(postId)
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'userId',
+                select: 'username'
+            }
+        })
+        .populate("userId", "username");
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Error getting post:", error);
+    res.status(500).json({ message: "Error getting post" });
+  }
+})
+
+
 
 //todo: Create new forum
 app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res) => {
   try {
     const { title, text } = req.body;
-    const pictures = req.files.map((file) => path.join('/uploads', file.filename));
+    const usrid = req.session.user._id;
+    console.log("/api/posts", usrid)
+    const pictures = req
+          .files
+          .map(file => path.join('uploads', usrid, file.filename));
+      console.log(pictures)
     const post = new Post({
-      userId: req.session.user._id,
-      title,
-      text,
-      pictures,
+        userId: usrid,
+        title,
+        text,
+        pictures,
     });
 
     await post.save();
@@ -257,8 +395,9 @@ app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res
   } catch (error) {
     console.error('Error creating post:', error);
     res.status(500).json({ message: 'Error creating post' });
-  }    res.status(200);
+  }    
+  res.status(200);
 })
-
+ 
 const PORT = process.env.PORT || 5005;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

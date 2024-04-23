@@ -1,6 +1,7 @@
 import User from '../models/user.js';
 import mongoose from 'mongoose';
 import Pcbuild from '../models/pcbuild.js';
+import BuildItem from '../models/builditem.js'
 
 const url = 'mongodb://127.0.0.1:27017/userdatabase'; // Default MongoDB connection URL
 
@@ -34,20 +35,28 @@ async function createNewBuild(userId, buildName) {
 
 async function addItem(userId, itemData) {
     try {
-        const ongoingBuild = await Pcbuild.findOne({ userId: userId, isCompleted: false });
-            if (ongoingBuild){
-                ongoingBuild.items.push(itemData);
-                await ongoingBuild.save();
-                return { success: true, message: 'Item added to ongoing build successfully' };
-            } else {
-
-            }
-
-    await newBuild.save();
-
-    await User.findByIdAndUpdate(userId, { $push: { builds: newBuild._id } });
-
-    return { success: true, message: 'Item added successfully' };
+        const ongoingBuild = await Pcbuild.findOne({ userId }).populate('items');
+        const { category, price="...", name="unnamed", ...rest } = itemData;
+        //(def jsonpaths (map str (fs/glob "./json" "**.json")))
+        //(map (comp (fn [sn] (every? #(get % "name") sn) ) json/parse-string slurp) jsonpaths)
+        const maybeItem = await BuildItem.findOne({ name });
+        let idAdded;
+        if(maybeItem) {
+            idAdded = maybeItem._id.toString() 
+        } else {
+            const item = await BuildItem.create({ 
+                category,
+                price,
+                name,
+                extra: JSON.stringify(rest)
+            });
+            idAdded = item._id.toString()
+        }
+        //do compatability check here here
+        console.log(ongoingBuild.items)
+        ongoingBuild.items.push(idAdded);
+        await ongoingBuild.save();
+        return { success: true, message: 'Item added to ongoing build successfully' };
     } catch (err){
         console.error('Error adding item:', err);
         return { success: false, error: 'Failed to add item' };
@@ -81,7 +90,10 @@ async function updateItem(userId, buildId, newBuildData) {
 async function getBuildsByUser(userId) {
     try {
         const userIdObjectId = new mongoose.Types.ObjectId(userId);
-        const builds = await Pcbuild.find({ userId: userIdObjectId });
+        const builds = await Pcbuild
+                .find({ userId: userIdObjectId })
+                .populate('items');
+
         console.log('The builds');
         console.log(builds);
 

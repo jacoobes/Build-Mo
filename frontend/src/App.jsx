@@ -12,6 +12,7 @@ import BuildPage from './Build.jsx';
 import ForumCreate from './ForumCreate.jsx';
 import BuildDetail from './BuildDetail';
 import Navbar from './Navbar'; 
+import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider} from './components/ThemeProvider.jsx';
 
 const ProtectedRoute = ({ children }) => {
@@ -28,6 +29,7 @@ const App = () => {
     <Router>
       <ThemeProvider>
       <AuthProvider>
+      <Toaster/>
       <Navbar />
           <Routes> {/* Wrap Route components in Routes */}
             <Route path="/" element={<AuthenticationPage/>}/>
@@ -38,8 +40,14 @@ const App = () => {
             <Route path="/posts" element={<PostPage/> } />
             <Route path="/posts/:postId" element={<Post/> } />
             <Route path="/post-create" element={<ForumCreate/> } />
-            <Route path="/build" element={<BuildPage />} />
-            <Route path="/build/:buildId" element={<BuildDetail />} />
+            <Route path="/build" element={
+                <ProtectedRoute> 
+                    <BuildPage/>
+                </ProtectedRoute>
+            } />
+            <Route path="/build/:buildId" element={
+                <BuildDetail/>
+            } />
           </Routes>
       </AuthProvider>
       </ThemeProvider>

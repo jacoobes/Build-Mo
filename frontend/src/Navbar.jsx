@@ -1,15 +1,5 @@
 // Navbar.jsx
 import { Link } from "react-router-dom";
-import { Switch } from "@/components/ui/switch"
-import { useTheme } from "./components/ThemeProvider";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { DropdownMenuRadioGroupDemo } from "./components/ui/radiogroup";
 import { useAuth } from "@/hooks/useAuth.jsx";
 import {useLocalStorage, useSessionStorage} from "@/hooks/useLocalStorage.jsx";
