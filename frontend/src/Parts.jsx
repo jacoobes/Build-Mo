@@ -31,6 +31,61 @@ import {
 import { Link } from 'react-router-dom';
 import { useToast } from './components/ui/use-toast';
 
+
+
+import {
+  CalendarIcon,
+  EnvelopeClosedIcon,
+  FaceIcon,
+  GearIcon,
+  PersonIcon,
+  RocketIcon,
+} from "@radix-ui/react-icons"
+
+
+export function CommandDemo() {
+  return (
+    <Command className="rounded-lg border shadow-md">
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem>
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem>
+            <FaceIcon className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem>
+            <RocketIcon className="mr-2 h-4 w-4" />
+            <span>Launch</span>
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Settings">
+          <CommandItem>
+            <PersonIcon className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+            <CommandShortcut>⌘P</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
+            <span>Mail</span>
+            <CommandShortcut>⌘B</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <GearIcon className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+            <CommandShortcut>⌘S</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  )
+}
+
 const DataGrid = () => {
     const [values, setValue] = React.useState([])
     const [builds, setBuilds] = React.useState([]);
@@ -69,13 +124,9 @@ const DataGrid = () => {
             .then(res => {
                 console.log(res)
                 if(res.success) {
-                    toast({ 
-                        title: res.message
-                    })
+                    toast({ title: res.message })
                 } else {
-                    toast({ 
-                        title: res.error ?? "Failed to add item"
-                    })
+                    toast({ title: res.error ?? "Failed to add item" })
                 }
                 
             })
@@ -86,9 +137,9 @@ const DataGrid = () => {
         err ? (<p>{err}</p>)
             : values 
                 ? (
-            <div className="flex flex-row min-h-screen">
-                <aside className="sidebar w-64 md:shadow transform-translate-x-full md:translate-x-0 transition-transform duration-150 ease-in">
-                  <Command>
+            <div className="flex flex-row">
+                <aside className="sidebar transform-translate-x-full md:translate-x-0 transition-transform duration-150 ease-in">
+                  <Command className="rounded-lg border shadow-md">
                         <CommandInput placeholder="Search categories"/>
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>

@@ -3,35 +3,28 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(false);
-    useEffect(() => {
-        fetch("/api/is-auth", { credentials: 'include' })
-        .then(res => res.json())
-        .then(jon => setAuth(jon.yes))
-    }, [])
-  const navigate = useNavigate();
+    const [auth, setAuth] = useState(false);
+        useEffect(() => {
+            fetch("/api/is-auth", { credentials: 'include' })
+            .then(res => res.json())
+            .then(jon => setAuth(jon.yes))
+        }, [])
+    const navigate = useNavigate();
 
-  // call this function when you want to authenticate the user
-  const login = async (data) => {
+    // call this function when you want to authenticate the user
+    const login = async (data) => {
         setAuth(true)
         navigate("/build");
-  };
+    };
 
-  // call this function to sign out logged in user
-  const logout = () => {
-    setAuth(false);
-    navigate("/", { replace: true });
-  };
+    // call this function to sign out logged in user
+    const logout = () => {
+        setAuth(false);
+        navigate("/", { replace: true });
+    };
 
-  const value = useMemo(
-    () => ({
-      user: auth,
-      login,
-      logout,
-    }),
-    [auth]
-  );
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    const value = useMemo(() => ({ user: auth, login, logout }), [auth]);
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 /**
  *
