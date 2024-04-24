@@ -151,7 +151,7 @@ app.post('/api/logout', (req, res) => {
                 console.log(err);
             } else {
                 console.log("destroyed")
-                res.json({message: 'Session is destroyed'})
+                res.json({ success: false, error : 'Session is destroyed'})
             }
         });
     } catch (err) {
@@ -384,7 +384,7 @@ app.post("/api/posts", isLoggedIn, upload.array("pictures", 10), async (req, res
     const pictures = req
           .files
           .map(file => path.join('uploads', usrid, file.filename));
-      console.log(pictures)
+    console.log(pictures)
     const post = new Post({
         userId: usrid,
         title,
