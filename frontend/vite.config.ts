@@ -12,8 +12,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": { 
-          target: "http://localhost:5005",
-          changeOrigin: true
+          target: "http://localhost:5005/",
+          changeOrigin: true, 
       }
     },
   },
@@ -31,6 +31,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "./build",
+    outDir: "../build",
   }
 });

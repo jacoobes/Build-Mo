@@ -6,6 +6,7 @@
     "backend": "node --watch backend/src/index.js",
     "dev:be": "node ./backend/src/index.js",
     "dev:fe": "npm start --prefix ./frontend",
+    "prod": "npm run build",
     "prettier": "prettier --write .",
     "build:frontend": "npm run build --prefix ./frontend",
     "build": "npm run build:frontend",

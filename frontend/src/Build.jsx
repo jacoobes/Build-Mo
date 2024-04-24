@@ -8,10 +8,10 @@ const Build = () => {
     const [added, setAdded] = React.useState(false);
     const [err, setErr] = React.useState(null)
     React.useEffect(() => {
-        fetch("/api/builds", { credentials: "include",  })
+        fetch("/api/builds", { credentials: "include" , })
           .then(res => res.json())
           .then(jsn=> setBuilds(jsn))
-          .catch(setErr)
+          .catch(e => { setErr(e); setBuilds([]) })
     }, [added]);
 
     const onClickGetBuilding = ev => {
