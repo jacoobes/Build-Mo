@@ -30,67 +30,22 @@ import {
 } from "@/components/ui/command"
 import { Link } from 'react-router-dom';
 import { useToast } from './components/ui/use-toast';
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Button } from './components/ui/button';
 
-
-
-import {
-  CalendarIcon,
-  EnvelopeClosedIcon,
-  FaceIcon,
-  GearIcon,
-  PersonIcon,
-  RocketIcon,
-} from "@radix-ui/react-icons"
-
-
-export function CommandDemo() {
-  return (
-    <Command className="rounded-lg border shadow-md">
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          <CommandItem>
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            <span>Calendar</span>
-          </CommandItem>
-          <CommandItem>
-            <FaceIcon className="mr-2 h-4 w-4" />
-            <span>Search Emoji</span>
-          </CommandItem>
-          <CommandItem>
-            <RocketIcon className="mr-2 h-4 w-4" />
-            <span>Launch</span>
-          </CommandItem>
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Settings">
-          <CommandItem>
-            <PersonIcon className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-            <span>Mail</span>
-            <CommandShortcut>⌘B</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <GearIcon className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
-    </Command>
-  )
+const RadioItem = ({value, display, ...props}) => {
+    return (<div className="flex items-center space-x-4">
+                <RadioGroupItem value={value} {...props} />
+                <Label htmlFor={value}>{display}</Label>
+            </div>)
 }
+
 
 const DataGrid = () => {
     const [values, setValue] = React.useState([])
     const [builds, setBuilds] = React.useState([]);
     const [selectedCategory, setSelectedCategory] = React.useState("cpu");
-    const [categories, setCategories] = React.useState("cpu");
     const [err, setErr] = React.useState(null)
     const { toast } = useToast()
     React.useEffect(() => {
@@ -111,14 +66,10 @@ const DataGrid = () => {
     const addItem = (build, item) => {
         return (event) => {
             fetch("/api/add-item", { 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 method: 'POST',
-                body: JSON.stringify({ 
-                    itemData: { category: selectedCategory, ...item },
-                }) 
+                body: JSON.stringify({ itemData: { category: selectedCategory, ...item }, }) 
             })
             .then(res => res.json())
             .then(res => {
@@ -129,8 +80,7 @@ const DataGrid = () => {
                     toast({ title: res.error ?? "Failed to add item" })
                 }
                 
-            })
-            .catch(console.error)
+            }).catch(console.error)
         }
     }
     return (
@@ -138,41 +88,38 @@ const DataGrid = () => {
             : values 
                 ? (
             <div className="flex flex-row">
-                <aside className="sidebar transform-translate-x-full md:translate-x-0 transition-transform duration-150 ease-in">
-                  <Command className="rounded-lg border shadow-md">
-                        <CommandInput placeholder="Search categories"/>
-                        <CommandList>
-                            <CommandEmpty>No results found.</CommandEmpty>
-                            <CommandGroup>
-                                <CommandItem onSelect={setSelectedCategory} value="case-accessory">Case Accessories</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="case">Case</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="cpu-cooler">Cpu Coolers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="cpu">Cpu</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="external-hdd">External HDD</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="fan-controller">Fan Controllers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="headphones">Headphones</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="internal-hdd">Internal HDD</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="keyboard">Keyboard</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="memory">Memory</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="monitors">Monitors</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="motherboard">Motherboards</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="mouse">Mouse</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="optical-drive">Optical Drive</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="os">OS</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="power-supply">Power Supply</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="sound-card">Sound Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="speakers">Speakers</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="thermal-paste">Thermal Paste</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="ups">Ups</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="video-card">Video Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="webcam">Webcam</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="wired-network-card">Wired Network Card</CommandItem>
-                                <CommandItem onSelect={setSelectedCategory} value="wireless-network-card">Wired Network Card</CommandItem>
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
+                <aside className="sidebar transform-translate-x-full md:translate-x-0 transition-transform duration-150 ease-in m-4">
+                    <h1 className="flex text-2xl text-bold justify-center">Categories</h1>
+                    <RadioGroup onValueChange={setSelectedCategory} 
+                        className="rounded-lg border shadow-md p-2"
+                        defaultValue="cpu">
+                        <RadioItem value="cpu" display="Cpu"/>
+                        <RadioItem value="case-accessory" display="Case Accessories" />
+                        <RadioItem value="case" display="Case"/>
+                        <RadioItem value="cpu-cooler" display="Cpu Coolers"/>
+                        <RadioItem value="external-hdd" display="External HDD"/>
+                        <RadioItem value="fan-controller" display="Fan Controllers"/>
+                        <RadioItem value="headphones" display="Headphones"/>
+                        <RadioItem value="internal-hdd" display="Internal HDD"/>
+                        <RadioItem value="keyboard" display="Keyboard"/>
+                        <RadioItem value="memory" display="Memory"/>
+                        <RadioItem value="monitors" display="Monitors"/>
+                        <RadioItem value="motherboard" display="Motherboards"/>
+                        <RadioItem value="mouse" display="Mouse"/>
+                        <RadioItem value="optical-drive" display="Optical Drive"/>
+                        <RadioItem value="os" display="OS"/>
+                        <RadioItem value="power-supply" display="Power Supply"/>
+                        <RadioItem value="sound-card" display="Sound Card"/>
+                        <RadioItem value="speakers" display="Speakers"/>
+                        <RadioItem value="thermal-paste" display="Thermal Paste"/>
+                        <RadioItem value="ups" display="Ups"/>
+                        <RadioItem value="video-card" display="Video Card"/>
+                        <RadioItem value="webcam" display="Webcam"/>
+                        <RadioItem value="wired-network-card" display="Wired Network Card"/>
+                        <RadioItem value="wireless-network-card" display="Wired Network Card"/>
+                    </RadioGroup>
                 </aside>
-                <hr className="h-px my-8  border-0 dark:bg-gray-700"/>
+                <hr className="h-px my-8 border-0 dark:bg-gray-700"/>
                 <div className="main-content flex flex-col flex-grow p-4">
                     <h1 className="font-bold text-2xl">{selectedCategory}</h1>
                     <div className="h-[63vh] relative overflow auto">

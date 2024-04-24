@@ -11,6 +11,7 @@ import { mkdir } from 'fs/promises'
 import {ls_json, read_json} from './dataset.js';
 import cookieParser from "cookie-parser";
 import multer from 'multer'
+import cors from 'cors'
 const validmimetypes= [
     "image/gif",
     "image/jpeg",
@@ -34,6 +35,7 @@ const upload = multer({ storage })
 
 function isLoggedIn(req, res, next) {
     if (req.session) {
+        console.log(req.session)
         if(!req.session.user) {
             res.status(404).json({ success: false, error: "Not allowed." });
         } else {
@@ -54,10 +56,19 @@ try {
 
 
 const app = express();
+app.set('trust proxy', 1)
 app.use('/api/uploads',express.static('uploads'))
 app.use(cookieParser())
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 
 app.use(session({

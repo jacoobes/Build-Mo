@@ -11,7 +11,10 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      "/api": "http://localhost:5005",
+      "/api": { 
+          target: "http://localhost:5005",
+          changeOrigin: true
+      }
     },
   },
   plugins: [
